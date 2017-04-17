@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+img {
+  width: 80px;
+  height: 80px;
+}
+dt, dd, h2, p {
+  margin-bottom: 10px;
+}
+p {
+  text-indent: 2em;
+}
+header, footer {
+  text-align: center;
+}
+.container {
+  margin: 20px;
+  padding: 20px 160px 20px 240px;
+  background: #eee;
+  border: 1px solid #999;
+}
+.clearfix {
+  & {
+    zoom: 1;
+  }
+  &:after {
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    content: "";
+  }
+}
+.left, .right, .main {
+  box-sizing: border-box;
+  background: #fff;
+  padding: 20px;
+}
+.left {
+  width: 200px;
+  position: relative;
+  left: -220px;
+  margin-left: -100%;
+  float: left;
+}
+.team-name {
+  vertical-align: top;
+}
+.right {
+  width: 120px;
+  right: -20px;
+  margin-right: -100%;
+  position: relative;
+  float: left;
+}
+.main {
+  width: 100%;
+  position: relative;
+  float: left;
+}

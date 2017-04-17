@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>task3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        img {
+            width: 80px;
+            height: 80px;
+        }
+        dt, dd, h2, p {
+            margin-bottom: 10px;
+        }
+        p {
+            text-indent: 2em;
+        }
+        header, footer {
+            text-align: center;
+        }
+        .container {
+            margin: 20px;
+            padding: 20px 160px 20px 240px;
+            background: #eee;
+            border: 1px solid #999;
+        }
+        .clearfix {
+            zoom: 1;
+        }
+        .clearfix:after {
+            display: block;
+            clear: both;
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+            content: "";
+        }
+        .left, .right, .main {
+            box-sizing: border-box;
+            background: #fff;
+            padding: 20px;
+        }
+        .left {
+            width: 200px;
+            position: relative;
+            left: -220px;
+            margin-left: -100%;
+            float: left;
+        }
+        .team-name {
+            vertical-align: top;
+        }
+        .right {
+            width: 120px;
+            right: -20px;
+            margin-right: -100%;
+            position: relative;
+            float: left;
+        }
+        .main {
+            width: 100%;
+            position: relative;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <header>2017 百度前端技术学院练习</header>
+    <div class="container clearfix">
+        <main class="main">
+            <article>
+                <h2>团队介绍</h2>
+                <p>就一个人</p>
+                <img src="img/1.jpg">
+            </article>
+        </main>
+        <aside class="left">
+            <img src="img/1.jpg">
+            <span class="team-name">wzh</span>
+        </aside>
+        <aside class="right">
+            <dl>
+                <dt>团队成员</dt>
+                <dd><img src="img/1.jpg"></dd>
+                <dd><img src="img/1.jpg"></dd>
+                <dd><img src="img/1.jpg"></dd>
+                <dd><img src="img/1.jpg"></dd>
+            </dl>
+        </aside>
+    </div>
+    <footer>2017 百度前端技术学院练习</footer>
+</body>
+</html>
