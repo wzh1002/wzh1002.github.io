@@ -492,8 +492,6 @@
         typeof vm.init === 'function' ? vm.init() : void 0;
     });
 
-    global.blacklist = vm;
-
 })(this, utils, app);
 /**
  * Created by 78462 on 2017/3/6.
@@ -897,7 +895,7 @@
     vm.eventer.on('init', function() {
         typeof vm.init === 'function' ? vm.init() : void 0;
     });
-    global.chatPanel = vm;
+
 })(this, utils, app);
 /**
  * Created by 78462 on 2017/3/6.
@@ -1210,7 +1208,7 @@
     vm.eventer.on('init', function() {
         typeof vm.init === 'function' ? vm.init() : void 0;
     });
-    global.chatWindow = vm;
+
 
 })(this, utils, app);
 /**
@@ -1301,10 +1299,7 @@
             'cloudMsg-fetch': 'fetch',
             'cloudMsg-refresh': 'refresh'
         },
-        eventer: app.eventer,
-        init: function() {
-
-        }
+        eventer: app.eventer
     });
 
 })(this, utils, app);
@@ -1465,7 +1460,6 @@
         eventer: app.eventer
     });
 
-    global.vm = vm;
 })(this, utils, app);
 /**
  * Created by 78462 on 2017/4/7.
@@ -2048,8 +2042,6 @@
         eventer: app.eventer
     });
 
-    global.groupInfo = vm;
-
 })(this, utils, app);
 /**
  * Created by 78462 on 2017/3/6.
@@ -2177,7 +2169,7 @@
         eventer: app.eventer
     });
 
-    global.modifyAvatar = vm;
+
 })(this, utils, app);
 /**
  * Created by 78462 on 2017/3/6.

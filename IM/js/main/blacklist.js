@@ -96,6 +96,4 @@
         typeof vm.init === 'function' ? vm.init() : void 0;
     });
 
-    global.blacklist = vm;
-
 })(this, utils, app);

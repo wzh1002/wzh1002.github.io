@@ -155,5 +155,4 @@
         eventer: app.eventer
     });
 
-    global.vm = vm;
 })(this, utils, app);

@@ -89,14 +89,14 @@
     var find = utils.find, findIndex = utils.findIndex, remove = utils.remove, assign = utils.assign, on = utils.on;
     var teamCount = 2, groupCount = 1000000004;
     var initData = {
-        defaultAvatar: '/IM/img/default-avatar.png',
-        defaultGroupAvatar: '/IM/img/group.png',
-        defaultTeamAvatar: '/IM/img/team.png',
+        defaultAvatar: '../../img/default-avatar.png',
+        defaultGroupAvatar: '../../img/group.png',
+        defaultTeamAvatar: '../../img/team.png',
         users: [
             {
                 account: 'user1',
                 nickName: '233',
-                avatar: '/IM/img/notice.png',
+                avatar: '../../img/notice.png',
                 gender: 'male',
                 birthday: '1995-10-10',
                 tel: '13007506620',
@@ -106,7 +106,7 @@
                 account: 'user2',
                 nickName: 'user2',
                 gender: 'male',
-                avatar: '/IM/img/search-group.png',
+                avatar: '../../img/search-group.png',
                 birthday: '2014-02-14'
             },
             {
@@ -870,7 +870,6 @@
         });
 
         server.on('getCloudMsg', function(obj) {
-            console.log(window.localstorage);
             var cloudMsg = staticApi.getCloudMsg(obj.to, obj.from);
             server.emit('refreshCloudMsg', cloudMsg);
         });

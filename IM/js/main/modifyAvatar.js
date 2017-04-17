@@ -78,5 +78,5 @@
         eventer: app.eventer
     });
 
-    global.modifyAvatar = vm;
+
 })(this, utils, app);

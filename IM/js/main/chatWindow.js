@@ -309,6 +309,6 @@
     vm.eventer.on('init', function() {
         typeof vm.init === 'function' ? vm.init() : void 0;
     });
-    global.chatWindow = vm;
+
 
 })(this, utils, app);

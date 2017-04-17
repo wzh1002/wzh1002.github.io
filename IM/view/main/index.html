@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>web IM</title>
-    <link rel="stylesheet" href="/IM/css/global.css">
-    <link rel="stylesheet" href="/IM/css/emoji.css">
+    <meta name="description" content="一个模拟网易云信的静态IM">
+    <meta name="keywords" content="IM、网易云信、静态">
+    <link rel="stylesheet" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/emoji.css">
     <link rel="stylesheet" href="./css/style.min.css">
 </head>
 <body>
@@ -27,7 +30,7 @@
                 <div id="sessions-wrapper" class="panel-item hide">
                     <div class="item" id="show-notice">
                         <div class="item-avatar">
-                            <img src="/IM/img/notice.png">
+                            <img src="../../img/notice.png">
                         </div>
                         <div class="item-text">
                             <p class="item-single-row">消息中心</p>
@@ -38,7 +41,7 @@
                 <div id="friends-wrapper" class="panel-item hide">
                     <div class="item" id="add-friend">
                         <div class="item-avatar">
-                            <img src="/IM/img/add-friend.png">
+                            <img src="../../img/add-friend.png">
                         </div>
                         <div class="item-text">
                             <p class="item-single-row">添加好友</p>
@@ -46,7 +49,7 @@
                     </div>
                     <div class="item" id="show-blacklist">
                         <div class="item-avatar">
-                            <img src="/IM/img/black-list.png">
+                            <img src="../../img/black-list.png">
                         </div>
                         <div class="item-text">
                             <p class="item-single-row">黑名单</p>
@@ -57,7 +60,7 @@
                 <div id="groups-wrapper" class="panel-item">
                     <div class="item" id="create-team">
                         <div class="item-avatar">
-                            <img src="/IM/img/add-group.png">
+                            <img src="../../img/add-group.png">
                         </div>
                         <div class="item-text">
                             <p class="item-single-row">创建讨论组</p>
@@ -65,7 +68,7 @@
                     </div>
                     <div class="item" id="create-group">
                         <div class="item-avatar">
-                            <img src="/IM/img/add-group.png">
+                            <img src="../../img/add-group.png">
                         </div>
                         <div class="item-text">
                             <p class="item-single-row">创建群</p>
@@ -73,7 +76,7 @@
                     </div>
                     <div class="item" id="search-group">
                         <div class="item-avatar">
-                            <img src="/IM/img/search-group.png">
+                            <img src="../../img/search-group.png">
                         </div>
                         <div class="item-text">
                             <p class="item-single-row">搜索群</p>
@@ -86,7 +89,7 @@
         </div>
         <div class="chat-window hide" id="chat-window">
             <div class="title">
-                <img id="chat-window-avatar" src="/IM/img/group.png" data-operate="showOthersInfo">
+                <img id="chat-window-avatar" src="../../img/group.png" data-operate="showOthersInfo">
                 <span id="chat-window-name" class="name">测试群</span>
                 <div class="cloud-msg" id="cloud-msg">
                     <i class="icon icon-group-info"></i>
@@ -121,7 +124,7 @@
             </div>
             <div class="footer">
                 <div class="item item-1 clearfix">
-                    <img src="/IM/img/group.png" class="left radius-circle avatar">
+                    <img src="../../img/group.png" class="left radius-circle avatar">
                     <p class="left account"></p>
                 </div>
                 <div class="item clearfix">
@@ -200,7 +203,7 @@
     <div class="card hide" id="my-info">
         <i class="icon icon-close close"></i>
         <div class="account-info clearfix">
-            <img src="/IM/img/notice.png" id="modify-avatar" class="avatar" alt="更换头像">
+            <img src="../../img/notice.png" id="modify-avatar" class="avatar" alt="更换头像">
             <div class="des">
                 <p class="nick-name"></p>
                 <i class="gender male"></i>
@@ -269,7 +272,7 @@
     <div class="card hide" id="others-info">
         <i class="icon icon-close close"></i>
         <div class="account-info clearfix">
-            <img src="/IM/img/default-avatar.png" class="avatar" alt="头像">
+            <img src="../../img/default-avatar.png" class="avatar" alt="头像">
             <div class="des left">
                 <p class="nick-name"></p>
                 <i class="gender"></i>
@@ -304,7 +307,7 @@
             <li class="mutelist">
                 消息提醒
                 <div class="switch">
-                    <img src="/IM/img/btn-switch.png" class="toggle-mutelist">
+                    <img src="../../img/btn-switch.png" class="toggle-mutelist">
                     <span class="off">off</span>
                     <span class="on">on</span>
                 </div>
@@ -312,7 +315,7 @@
             <li class="blacklist off">
                 黑名单
                 <div class="switch">
-                    <img src="/IM/img/btn-switch.png" class="toggle-blacklist">
+                    <img src="../../img/btn-switch.png" class="toggle-blacklist">
                     <span class="off">off</span>
                     <span class="on">on</span>
                 </div>
@@ -373,7 +376,7 @@
         <div class="content">
             <input type="text" name="search" placeholder="请输入账号">
             <div class="info clearfix">
-                <img class="avatar left" src="/IM/img/default-avatar.png">
+                <img class="avatar left" src="../../img/default-avatar.png">
                 <div class="des left">
                     <p class="nick-name">user1</p>
                     <p class="account">账号：user1</p>
@@ -399,7 +402,7 @@
         <div class="content">
             <input type="text" name="search" placeholder="请输入群id">
             <div class="info clearfix">
-                <img class="avatar left" src="/IM/img/group.png">
+                <img class="avatar left" src="../../img/group.png">
                 <div class="des left">
                     <p class="group-name">group</p>
                     <p class="account">233</p>
@@ -617,9 +620,9 @@
             <button class="btn btn-ok">解除</button>
         </li>
     </script>
-    <script src="/IM/js/config/config.js"></script>
-    <script src="/IM/build/js/utils/utils.min.js"></script>
-    <script src="/IM/build/js/mock/server.min.js"></script>
-    <script src="/IM/build/js/main/1.0.min.js"></script>
+    <script src="../../js/config/config.js"></script>
+    <script src="../../build/js/utils/utils.min.js"></script>
+    <script src="../../build/js/mock/server.min.js"></script>
+    <script src="../../build/js/main/1.0.min.js"></script>
 </body>
 </html>

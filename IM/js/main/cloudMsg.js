@@ -86,10 +86,7 @@
             'cloudMsg-fetch': 'fetch',
             'cloudMsg-refresh': 'refresh'
         },
-        eventer: app.eventer,
-        init: function() {
-
-        }
+        eventer: app.eventer
     });
 
 })(this, utils, app);

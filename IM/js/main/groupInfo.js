@@ -377,6 +377,4 @@
         eventer: app.eventer
     });
 
-    global.groupInfo = vm;
-
 })(this, utils, app);

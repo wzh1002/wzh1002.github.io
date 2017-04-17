@@ -400,5 +400,5 @@
     vm.eventer.on('init', function() {
         typeof vm.init === 'function' ? vm.init() : void 0;
     });
-    global.chatPanel = vm;
+
 })(this, utils, app);

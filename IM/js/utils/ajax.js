@@ -2,37 +2,30 @@
  * Created by 78462 on 2016/12/14.
  */
 (function(global) {
-    
-    'use strict';
-
     function ajax(obj) {
-        var client = new XMLHttpRequest(),
+        var xhr = new XMLHttpRequest(),
             type = (obj.type || '').toLowerCase(),
             dataType = obj.dataType,
             contentType = obj.contentType || typeof obj.data === 'string' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'application/json',
             path,
             err = [],
             success = [];
-        client.onreadystatechange = function() {
+        xhr.onreadystatechange = function() {
             var data;
-            if (client.readyState === 4) {
-                data = client.responseText;
-                if ((client.status >= 200 && client.status < 300) || client.status === 304) {
+            if (xhr.readyState === 4) {
+                data = xhr.responseText;
+                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
                     if (dataType === undefined || dataType.toLocaleLowerCase() === 'json') {
                         data = zh(data);
                     }
-                    if (obj.success === 'function') {
-                        obj.success(data, client)
-                    }
+                    typeof obj.success === 'function' ? obj.success(data, xhr) : void 0;
                     success.forEach(function(func) {
-                        func(data, client);
+                        func(data, xhr);
                     });
                 } else {
-                    if (obj.error === 'function') {
-                        obj.error(data, client)
-                    }
+                    typeof obj.error === 'function' ? obj.error(data, xhr) : void 0;
                     err.forEach(function(func) {
-                        func(data, client);
+                        func(data, xhr);
                     });
                 }
             }
@@ -40,12 +33,12 @@
 
         if (type === 'get') {
             path = obj.data ? addURIParams(obj.url, obj.data) : obj.url;
-            client.open(type, path, true);
-            client.send(null);
+            xhr.open(type, path, true);
+            xhr.send(null);
         } else if (type === 'post'){
-            client.open(type, obj.url, true);
-            client.setRequestHeader('Content-Type', contentType);
-            client.send(JSON.stringify(obj.data));
+            xhr.open(type, obj.url, true);
+            xhr.setRequestHeader('Content-Type', contentType);
+            xhr.send(JSON.stringify(obj.data));
         }
 
 
@@ -86,14 +79,14 @@
 
     ajax.get = function(url) {
         if (typeof arguments[1] !== 'object') {
-            return ajax({
+            return this({
                 url: url,
                 type: 'get',
                 success: arguments[1],
                 error: arguments[2] || arguments[1]
             });
         }
-        return ajax({
+        return this({
             url: url,
             type: 'get',
             data: arguments[1],
@@ -104,14 +97,14 @@
 
     ajax.post = function(url, data) {
         if (typeof arguments[1] !== 'object') {
-            return ajax({
+            return this({
                 url: url,
                 type: 'post',
                 success: arguments[1],
                 error: arguments[2] || arguments[1]
             });
         }
-        return ajax({
+        return this({
             url: url,
             type: 'post',
             data: arguments[1],
