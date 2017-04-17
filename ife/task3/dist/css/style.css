@@ -32,7 +32,8 @@ header, footer {
   content: ""; }
 
 .left, .right, .main {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   background: #fff;
   padding: 20px; }
 
