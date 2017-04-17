@@ -217,7 +217,7 @@
                 updateTime: 1491208589012,
                 messages: [
                     {
-                        content: 'fucking',
+                        content: 'hay',
                         time: 1491208589012
                     }
                 ]
@@ -565,7 +565,7 @@
             }
         },
         getFriendInfo: function(account, target) {
-            var friends = staticApi.getFriendsByUser(account);
+            var friends = this.getFriendsByUser(account);
             return find(friends, function(item) {
                     return item.account === target;
             });
@@ -581,7 +581,7 @@
             if (noteName) {
                 obj.noteName = noteName;
             }
-            if (friends = staticApi.getFriendsByUser(account)) {
+            if (friends = this.getFriendsByUser(account)) {
                 friends.push(obj);
             } else {
                 dataBase.friends.push({
@@ -589,7 +589,7 @@
                     friends: [obj]
                 });
             }
-            if (friends = staticApi.getFriendsByUser(target)) {
+            if (friends = this.getFriendsByUser(target)) {
                 friends.push({
                     account: account
                 });
@@ -602,21 +602,33 @@
                 });
             }
         },
-        removeFriend: function(account, target) {
-            var friends;
-            if (friends = staticApi.getFriendsByUser(account)) {
+        removeFriend: function(account, target, flag) {
+            var friends, blacklist, item;
+            if (friends = this.getFriendsByUser(account)) {
                 remove(friends, function(item) {
                     return item.account === target;
                 });
             }
-            if (friends = staticApi.getFriendsByUser(target)) {
+            if (friends = this.getFriendsByUser(target)) {
                 remove(friends, function(item) {
                     return item.account === account
                 });
             }
+            if (flag === undefined) {
+                if (blacklist = this.getBlacklistByUser(account)) {
+                    if (item = find(blacklist, function(item) {return item.account === target})) {
+                        item.friend = false;
+                    }
+                }
+                if (blacklist = this.getBlacklistByUser(target)) {
+                    if (item = find(blacklist, function(item) {return item.account === account})) {
+                        item.friend = false;
+                    }
+                }
+            }
         },
         addBlacklist: function(account, target, flag) {
-            var blacklist = staticApi.getBlacklistByUser(account),
+            var blacklist = this.getBlacklistByUser(account),
                 obj = {
                     account: target
                 };
@@ -640,7 +652,7 @@
             return obj;
         },
         removeBlacklist: function(account, target) {
-            var blacklist = staticApi.getBlacklistByUser(account);
+            var blacklist = this.getBlacklistByUser(account);
             if (blacklist) {
                 return remove(blacklist, function(item) {
                     return item.account === target;
@@ -904,9 +916,7 @@
         });
 
         server.on('deleteFriend', function(obj) {
-            staticApi.removeFriend(obj.account, function(item) {
-                return item.account === obj.target;
-            });
+            staticApi.removeFriend(obj.account, obj.target);
             server.emit('deleteFriend', obj);
         });
 
@@ -915,7 +925,7 @@
             var result = staticApi.addBlacklist(obj.account, obj.target, isFriend);
             server.emit('addBlacklist', result);
             if (isFriend) {
-                staticApi.removeFriend(obj.account, obj.target);
+                staticApi.removeFriend(obj.account, obj.target, true);
                 server.emit('deleteFriend', obj);
             }
         });
@@ -927,12 +937,10 @@
             });
             if (user.friend) {
                 staticApi.addFriend(obj.account, obj.target, user.noteName);
-            } else {
-                staticApi.addFriend(obj.account, obj.target);
+                var info = staticApi.getUser(obj.target);
+                info.noteName = user.noteName;
+                server.emit('addFriend', info);
             }
-            var info = staticApi.getUser(obj.target);
-            info.noteName = user.noteName;
-            server.emit('addFriend', info);
         });
 
         server.on('updateNoteName', function(obj) {

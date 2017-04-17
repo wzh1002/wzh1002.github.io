@@ -48,7 +48,9 @@
                     },
                     remove: function(account) {
                         var ele = q.call(vm.eles.friends, '[data-account=' + account + ']')[0];
-                        vm.eles.friends.removeChild(ele);
+                        if (ele instanceof Element) {
+                            vm.eles.friends.removeChild(ele);
+                        }
                         remove(this, function(item) {
                             return item.account === account;
                         });
@@ -82,7 +84,9 @@
                     },
                     remove: function(account) {
                         var ele = q.call(vm.eles.groups, '[data-account="' + account + '"]')[0];
-                        vm.eles.groups.removeChild(ele);
+                        if (ele instanceof Element) {
+                            vm.eles.groups.removeChild(ele);
+                        }
                         remove(this, function(item) {
                             return item.account === account;
                         });
@@ -120,7 +124,9 @@
                     },
                     remove: function(account) {
                         var ele = q.call(vm.eles.teams, '[data-account="' + account + '"]')[0];
-                        vm.eles.teams.removeChild(ele);
+                        if (ele instanceof Element) {
+                            vm.eles.teams.removeChild(ele);
+                        }
                         remove(this, function(item) {
                             return item.account === account;
                         });
