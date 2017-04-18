@@ -54,7 +54,7 @@
         }
 
         emit(eventName, data) {
-            var arr = this.events[eventName];
+            let arr = this.events[eventName];
             if (Array.isArray(arr)) {
                 arr.forEach(cb => cb(data));
             }
