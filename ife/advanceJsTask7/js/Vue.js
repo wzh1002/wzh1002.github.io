@@ -28,9 +28,9 @@
             this.$data = options.data;
             this.hijack(this.$data);
             this.$eventer = new Eventer();
-            this.$init = this.$el.innerHTML;
+            this.$template = this.$el.innerHTML;
             if (this.$el instanceof Element) {
-                this.scan(this.$init);
+                this.scan(this.$template);
                 this.refresh();
             }
         }
@@ -74,7 +74,7 @@
         }
 
         refresh() {
-            this.$el.innerHTML = this.render(this.$init, this.$data);
+            this.$el.innerHTML = this.render(this.$template, this.$data);
         }
 
         render(str, obj) {

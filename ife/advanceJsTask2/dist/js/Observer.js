@@ -9,7 +9,9 @@
         constructor(data) {
             this.data = data;
             for (let key in data) {
-                this.watch(data, key, data[key]);
+                if (data.hasOwnProperty(key)) {
+                    this.watch(data, key, data[key]);
+                }
             }
         }
 

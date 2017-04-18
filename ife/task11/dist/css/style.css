@@ -1,6 +1,203 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+html {
+  background: #eee; }
+
+body {
+  margin: auto;
+  max-width: 420px; }
+
+ul, li {
+  list-style: none; }
+
 .header {
   color: #fff;
-  background: #0f0;
-  text-align: center; }
+  background: #00f6f6;
+  text-align: center;
+  line-height: 40px;
+  font-size: 1rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  z-index: 1; }
+.header .title {
+  font-size: 1rem;
+  font-weight: 500; }
 .header .back {
-  float: left; }
+  position: absolute;
+  left: 20px; }
+
+.nav {
+  text-align: center;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  line-height: 40px;
+  color: #000;
+  background: #fff; }
+.nav .nav-tab {
+  width: 20%; }
+.nav .nav-tab.active {
+  border-bottom: 4px solid #00f6f6; }
+
+.content {
+  margin-top: 80px;
+  position: relative; }
+
+.bg img {
+  width: 100%; }
+
+.labels {
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0 10px;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  text-align: center;
+  background: #fff;
+  overflow: hidden; }
+.labels > div {
+  width: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 2px solid #eee; }
+.labels .label {
+  -ms-flex-positive: 1;
+      flex-grow: 1;
+  font-size: 14px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-align: center;
+      align-items: center;
+  padding: 10px; }
+.labels .circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #00f6f6;
+  margin-bottom: 10px; }
+.labels .icon-book {
+  display: block;
+  position: relative;
+  top: 8px;
+  left: 8px;
+  height: 24px;
+  width: 24px;
+  background: url(../../img/label.svg) no-repeat;
+  background-size: 24px 24px; }
+
+.columns {
+  display: -ms-flexbox;
+  display: flex;
+  text-align: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  background: #fff;
+  padding: 15px 10px; }
+.columns > article {
+  border-right: 2px solid #eee;
+  -ms-flex-positive: 1;
+      flex-grow: 1; }
+.columns:last-child {
+  border-right: none; }
+.columns h4 {
+  margin-bottom: 10px; }
+
+.modules img {
+  width: 80px;
+  height: 80px; }
+.modules ul {
+  padding-top: 15px; }
+.modules li {
+  display: -ms-flexbox;
+  display: flex; }
+.modules h4 {
+  color: #888;
+  font-weight: 500; }
+.modules .module {
+  margin-top: 15px;
+  padding: 0 10px;
+  background: #fff; }
+.modules .title {
+  line-height: 40px;
+  border-bottom: 2px solid #eee; }
+.modules .des {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  font-size: 0.9rem;
+  line-height: 35px;
+  text-align: center;
+  margin-left: 10px;
+  -ms-flex-positive: 1;
+      flex-grow: 1; }
+.modules .des span {
+  display: block;
+  background: #eee;
+  margin-bottom: 10px; }
+
+.articles {
+  margin-top: 15px; }
+.articles li {
+  display: -ms-flexbox;
+  display: flex;
+  background: #fff;
+  padding: 10px;
+  border-bottom: 2px solid #eee; }
+.articles li img {
+  width: 100px;
+  height: 70px; }
+.articles h4 {
+  font-weight: 500; }
+.articles p {
+  font-size: 0.8rem;
+  color: #666; }
+.articles .title {
+  margin-left: 10px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+.articles .multi-img {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+.articles .multi-img img {
+  margin-right: 2px;
+  -ms-flex-positive: 1;
+      flex-grow: 1; }
+.articles .multi-img .imgs {
+  display: -ms-flexbox;
+  display: flex;
+  margin: 10px 0 5px;
+  -ms-flex-pack: justify;
+      justify-content: space-between; }
+
+@media (min-width: 350px) {
+  .labels .circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #00f6f6;
+    margin-bottom: 10px; }
+  .labels .icon-book {
+    display: block;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    height: 30px;
+    width: 30px;
+    background: url(../../img/label.svg) no-repeat;
+    background-size: 30px 30px; } }

@@ -39,7 +39,9 @@
         hijack(data, dataName) {
             if (typeof data === 'object') {
                 for (let key in data) {
-                    this.watch(data, key, data[key], dataName);
+                    if (data.hasOwnProperty(key)) {
+                        this.watch(data, key, data[key], dataName);
+                    }
                 }
             }
         }
