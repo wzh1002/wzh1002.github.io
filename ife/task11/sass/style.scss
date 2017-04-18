@@ -118,7 +118,7 @@ ul, li {
     border-right: $divider;
     flex-grow: 1;
   }
-  &:last-child {
+  article:last-child {
     border-right: none;
   }
   h4 {
