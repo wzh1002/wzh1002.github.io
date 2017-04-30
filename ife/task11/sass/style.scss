@@ -9,7 +9,6 @@ html {
 }
 body {
   margin: auto;
-  max-width: 420px;
 }
 ul, li {
   list-style: none;
@@ -236,8 +235,20 @@ ul, li {
   }
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (min-width: 400px) and (max-width: 749px) {
   body {
     font-size:19px
+  }
+}
+
+@media screen and (min-width:750px) and (max-width:799px){
+  body{
+    font-size:24px
+  }
+}
+
+@media screen and (min-width:800px){
+  body{
+    font-size:25px
   }
 }

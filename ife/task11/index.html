@@ -168,7 +168,13 @@
     </main>
     <footer></footer>
     <script>
-        document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+        var docE = document.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function() {
+                    docE.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+                };
+        window.addEventListener(resizeEvt, recalc, false);
+        document.addEventListener('DOMContentLoaded', recalc, false);
     </script>
 </body>
 </html>
