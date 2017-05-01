@@ -5,7 +5,7 @@
             <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
             <button class="destroy" @click="removeTodo(todo)"></button>
         </div>
-        <input class="edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)">
+        <input class="edit" type="text" v-model="todo.title" ref="input" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)">
     </li>
 </template>
 <script type="text/ecmascript-6">
@@ -16,6 +16,12 @@
         methods: {
             editTodo: function(todo) {
                 bus.$emit('editTodo', todo);
+
+                let input = this.$refs.input;
+                setTimeout(function() {
+                    input.focus();
+                    input.setSelectionRange(input.value.length, input.value.length);
+                }, 0);
             },
             doneEdit: function(todo) {
                 bus.$emit('doneEdit', todo);

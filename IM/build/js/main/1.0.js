@@ -1949,16 +1949,17 @@
             editName: function() {
                 if (vm.modify) {
                     utils.addClass(vm.eles.nameCtn, 'edit');
+                    vm.eles.nameInput.focus();
                 }
             },
             editInfo: function() {
                 if (vm.modify) {
                     utils.addClass(vm.eles.infoCtn, 'edit');
+                    vm.eles.infoInput.focus();
                 }
             },
             showName: function() {
                 utils.removeClass(vm.eles.nameCtn, 'edit');
-                vm.eles.nameInput.focus();
                 if (vm.name === this.value) {
                     return;
                 }
@@ -1973,7 +1974,6 @@
             },
             showInfo: function() {
                 utils.removeClass(vm.eles.infoCtn, 'edit');
-                vm.eles.infoInput.focus();
                 if (vm.info === this.value) {
                     return;
                 }
