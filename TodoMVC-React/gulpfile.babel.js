@@ -2,6 +2,7 @@
  * Created by 78462 on 2017/4/23.
  */
 import gulp from 'gulp';
+import gzip from 'gulp-gzip';
 import uglify from 'gulp-uglify';
 import rename from 'gulp-rename';
 import connect from 'gulp-connect';
@@ -45,6 +46,7 @@ gulp.task('browserify', () => {
     return src.bundle()
         .pipe(source("bundle.js"))
         .pipe(streamify(uglify()))
+        //.pipe(streamify(gzip()))
         .pipe(gulp.dest("dist"));
 });
 
