@@ -15,6 +15,14 @@
                 <img src="./img/resume.png">
             </div>
             <ul class="content">
+                <li class="basic-info">
+                    <dl>
+                        <dt>基本信息</dt>
+                        <dd>个人信息：张威 / 男 / 22岁</dd>
+                        <dd>教育经历：郑州大学软件工程专业 (2012.9 - 2016.7)</dd>
+                        <dd>github：<a href="https://www.github.com/wzh1002">https://www.github.com/wzh1002</a></dd>
+                    </dl>
+                </li>
                 <li>
                     <dl>
                         <dt>联系方式</dt>
@@ -28,31 +36,10 @@
                         <dd>前端工程师</dd>
                     </dl>
                 </li>
-                <li>
-                    <dl>
-                        <dt>技能点</dt>
-                        <dd><span class="skill-name">Javascript</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 90%"></div></div></dd>
-                        <dd><span class="skill-name">HTML</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 90%"></div></div></dd>
-                        <dd><span class="skill-name">CSS</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 90%"></div></div></dd>
-                        <dd><span class="skill-name">Node.js</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 60%"></div></div></dd>
-                    </dl>
-                </li>
             </ul>
-            <div class="personal-des">
-                <p>我是一个充满活力、对前端由衷热爱、善于发现问题的前端工程师。</p>
-                <p>我目前正在寻找前端工程师岗位，希望借此机会为贵司献上我的一点绵薄之力，快招我到碗里来吧！</p>
-            </div>
         </aside>
         <main class="main">
             <ul>
-                <li class="basic-info">
-                    <dl>
-                        <dt>基本信息</dt>
-                        <dd>个人信息：张威 / 男 / 22岁</dd>
-                        <dd>教育经历：郑州大学软件工程专业 (2012.9 - 2016.7)</dd>
-                        <dd>github：<a href="https://www.github.com/wzh1002">https://www.github.com/wzh1002</a></dd>
-                    </dl>
-                </li>
                 <li class="project-exp">
                     <dl>
                         <dt>项目经验</dt>
@@ -63,9 +50,10 @@
                                     <i class="dot"></i>
                                     <h4>学做网</h4>
                                     <p class="des">
-                                        项目是一个面对学校使用的在线教育学习平台。参与了项目的前端开发和部分后台开发工作，项目是按照模块功能进行划分的，
-                                        个人负责课程监控、用户间通讯的前端和后台的开发。负责课程查询、评分、登录注册、用户信息维护等前端页面的开发。
-                                        团队成员之间使用git进行协作。主要使用到了Node.js、Express、jQuery和underscore。
+                                        一个面向学校使用的pc端的教育学习平台。主要负责的部分有：<br/>
+                                        1. 用户间即时通讯的后台开发，以及通讯用到的用户界面的开发。,<br/>
+                                        2. 负责用户个人主页、教师评分、监控用户学习情况等前端页面的开发。<br/>
+                                        团队成员之间使用git进行协作。负责的后端部分使用了Node.js、Express。前端页面的开发则是用到了jQuery和underscore。
                                     </p>
                                 </li>
                             </ul>
@@ -80,9 +68,17 @@
                                         <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/IM" target="_blank"><i class="icon-link"></i>源代码</a>
                                         <a href="https://wzh1002.github.io/IM/view/main/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
+                                    <p class="des">项目使用原生es5编写，没有使用到其他框架或库，自己封装了一个常用的工具函数，样式使用sass编写，项目最后使用gulp做了简单的打包处理。</p>
+                                    <p class="des">为了演示去除了登陆和注册页(砍掉了发送图片的功能、发送文件的功能则没有实现)。在前端mock了socketIo和数据库。使用了localStorage对数据进行持久化。</p>
+                                </li>
+                                <li>
+                                    <i class="dot"></i>
+                                    <h4>
+                                        blog
+                                        <a href="https://wzh1002.github.io/blog/" target="_blank"><i class="icon-link"></i>地址</a>
+                                    </h4>
                                     <p class="des">
-                                        一个模拟网易云信的一个静态个人项目，自己在前端模拟了一个后台，并使用localStorage进行数据持久化。
-                                        项目全部使用原生es5进行编写。自己封装了一些常用的操作，例如事件代理、元素查找、数据劫持监听和ajax等。
+                                        hexo搭建的静态个人博客，用来记录一些自己在平常工作和学习中的一些了解。
                                     </p>
                                 </li>
                                 <li>
@@ -93,29 +89,7 @@
                                         <a href="https://wzh1002.github.io/resume/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
                                     <p class="des">
-                                        sass + html 个人简历
-                                    </p>
-                                </li>
-                                <li>
-                                    <i class="dot"></i>
-                                    <h4>
-                                        TodoMVC ( react )
-                                        <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/TodoMVC-React/" target="_blank"><i class="icon-link"></i>源代码</a>
-                                        <a href="https://wzh1002.github.io/TodoMVC-React/" target="_blank"><i class="icon-link"></i>demo</a>
-                                    </h4>
-                                    <p class="des">
-                                        react + es6 + gulp
-                                    </p>
-                                </li>
-                                <li>
-                                    <i class="dot"></i>
-                                    <h4>
-                                        TodoMVC ( vue )
-                                        <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/TodoMVC-Vue" target="_blank"><i class="icon-link"></i>源代码</a>
-                                        <a href="https://wzh1002.github.io/TodoMVC-Vue/" target="_blank"><i class="icon-link"></i>demo</a>
-                                    </h4>
-                                    <p class="des">
-                                        vue2.x + es6 + webpack2.x
+                                        个人简历，描述自己的工作经验和项目经历，技术栈：sass + html
                                     </p>
                                 </li>
                             </ul>
