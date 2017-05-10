@@ -36,6 +36,23 @@
                         <dd>前端工程师</dd>
                     </dl>
                 </li>
+                <li>
+                    <dl>
+                        <dt>技能点</dt>
+                        <dd><span class="skill-name">ES5</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 90%"></div></div></dd>
+                        <dd><span class="skill-name">HTML</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 80%"></div></div></dd>
+                        <dd><span class="skill-name">CSS</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 80%"></div></div></dd>
+                        <dd><span class="skill-name">jQuery</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 70%"></div></div></dd>
+                        <dd><span class="skill-name">Bootstrap</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 65%"></div></div></dd>
+                        <dd><span class="skill-name">Node.js</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 60%"></div></div></dd>
+                        <dd><span class="skill-name">Underscore</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 55%"></div></div></dd>
+                        <dd><span class="skill-name">Vue</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 50%"></div></div></dd>
+                        <dd><span class="skill-name">正则</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 50%"></div></div></dd>
+                        <dd><span class="skill-name">React</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 40%"></div></div></dd>
+                        <dd><span class="skill-name">ES6</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 40%"></div></div></dd>
+                        <dd><span class="skill-name">Sass</span><div class="skill-bar-wrap"><div class="skill-bar" style="width: 40%"></div></div></dd>
+                    </dl>
+                </li>
             </ul>
         </aside>
         <main class="main">
@@ -50,10 +67,10 @@
                                     <i class="dot"></i>
                                     <h4>学做网</h4>
                                     <p class="des">
-                                        一个面向学校使用的pc端的教育学习平台。主要负责的部分有：<br/>
-                                        1. 用户间即时通讯的后台开发，以及通讯用到的用户界面的开发。,<br/>
-                                        2. 负责用户个人主页、教师评分、监控用户学习情况等前端页面的开发。<br/>
-                                        团队成员之间使用git进行协作。负责的后端部分使用了Node.js、Express。前端页面的开发则是用到了jQuery和underscore。
+                                        一个面向学校使用的教育学习平台。主要负责的部分有：<br/>
+                                        1. 用户间IM的开发，通过webSocket进行通信，使用rabbitmq做消息持久化。<br/>
+                                        2. 负责用户个人主页、教师评分、监控用户学习情况等前端页面的开发，主要用到jQuery、Underscore和Bootstrap。<br/>
+                                        团队成员之间使用git进行协作。
                                     </p>
                                 </li>
                             </ul>
@@ -68,8 +85,12 @@
                                         <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/IM" target="_blank"><i class="icon-link"></i>源代码</a>
                                         <a href="https://wzh1002.github.io/IM/view/main/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
-                                    <p class="des">项目使用原生es5编写，没有使用到其他框架或库，自己封装了一个常用的工具函数，样式使用sass编写，项目最后使用gulp做了简单的打包处理。</p>
-                                    <p class="des">为了演示去除了登陆和注册页(砍掉了发送图片的功能、发送文件的功能则没有实现)。在前端mock了socketIo和数据库。使用了localStorage对数据进行持久化。</p>
+                                    <p class="des">
+                                        项目使用原生es5编写，没有依赖其他框架或库。自己封装了一个常用的工具函数库，实现了数据监听、DOM事件代理、消息总线等常用函数。
+                                        并且通过这些函数构建了一个小的框架用于该项目，将页面划分成了多个模块、各模块间通过消息总线传递消息进行调用。
+                                        扩展了数组的方法，使其能在push或remove时自动更新DOM。</p>
+                                    <p class="des">样式使用Sass编写，整个项目用gulp进行打包。</p>
+                                    <p class="des">在前端mock了socketIo和数据库。使用了localStorage对数据进行持久化。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
@@ -89,7 +110,7 @@
                                         <a href="https://wzh1002.github.io/resume/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
                                     <p class="des">
-                                        个人简历，描述自己的工作经验和项目经历，技术栈：sass + html
+                                        个人简历，描述自己的工作经验和项目经历，sass + html + gulp
                                     </p>
                                 </li>
                             </ul>
@@ -104,12 +125,6 @@
                             <ul class="exp">
                                 <li>
                                     <i class="dot"></i>
-                                    <h4>HTML/CSS</h4>
-                                    <p class="des">熟悉HTML5/CSS3新特性，对Web语义化有一定了解，能够编写语义化的 HTML，模块化的 CSS，完成较复杂的布局。</p>
-                                    <p class="des">熟悉 Sass / Autoprefixer 等CSS预处理和后处理方法、工具。</p>
-                                </li>
-                                <li>
-                                    <i class="dot"></i>
                                     <h4>Javascript</h4>
                                     <p class="des">熟练使用原生JavaScript完成页面交互和功能实现，能够运用原生JS封装简单插件，能脱离各种库或框架进行开发。</p>
                                     <p class="des">能够运用模块化、面向对象的方式进行编程。</p>
@@ -117,8 +132,14 @@
                                 </li>
                                 <li>
                                     <i class="dot"></i>
+                                    <h4>HTML/CSS</h4>
+                                    <p class="des">熟悉HTML5/CSS3新特性，对Web语义化有一定了解，能够编写语义化的 HTML，模块化的 CSS，完成较复杂的布局。</p>
+                                    <p class="des">熟悉 Sass / Autoprefixer 等CSS预处理和后处理方法、工具。</p>
+                                </li>
+                                <li>
+                                    <i class="dot"></i>
                                     <h4>其他</h4>
-                                    <p class="des">熟悉gulp、webpack等前端自动化工具，了解前端安全，性能优化方面的一些知识。</p>
+                                    <p class="des">熟悉gulp、webpack等前端自动化工具，熟悉正则表达式，了解前端安全，性能优化方面的一些知识。</p>
                                 </li>
                             </ul>
                         </dd>
@@ -127,13 +148,13 @@
                             <ul class="exp">
                                 <li>
                                     <i class="dot"></i>
-                                    <h4>环境</h4>
-                                    <p class="des">对Linux 开发环境、 Linux 服务器环境搭建部署有一定了解。</p>
+                                    <h4>Node.js</h4>
+                                    <p class="des">对Node.js有一定了解，熟悉基于express的web开发。能够使用Node.js搭建mock服务器和一些小型网站，用mongodb做数据存储、redis做session存储。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
-                                    <h4>语言</h4>
-                                    <p class="des">对Node.js有一定了解，熟悉基于express的web开发。能够使用Node.js搭建mock服务器和一些小型网站。</p>
+                                    <h4>Linux</h4>
+                                    <p class="des">对Linux 服务器环境搭建部署有一定了解，在Linux上通过pm2部署过node.js服务，配置过nginx用于将外网的访问转到对应的服务器上、写过开机后服务自启动脚本。</p>
                                 </li>
                             </ul>
                         </dd>

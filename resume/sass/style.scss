@@ -13,6 +13,7 @@ a {
 }
 a:link, a:visited, a:hover, a:active {
   text-decoration: none;
+  color: blue;
 }
 ul, li {
   list-style: none;
@@ -40,7 +41,7 @@ h4 {
     height: 15px;
     margin-right: 5px;
     display: inline-block;
-    background: url(../img/nav.svg);
+    background: url(../../img/nav.svg);
     background-size: 15px;
   }
 }
@@ -48,7 +49,8 @@ h3, h4 {
   line-height: 30px;
 }
 .container {
-  width: 1060px;
+  width: 1080px;
+  height: 1527px;
   margin: auto;
   display: flex;
 }
@@ -58,7 +60,7 @@ h3, h4 {
 .sidebar {
   & {
     padding: 15px;
-    width: 300px;
+    width: 320px;
     color: #fff;
     background: #00bfa5;
   }
