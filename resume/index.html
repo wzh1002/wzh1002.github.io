@@ -20,6 +20,7 @@
                         <dt>基本信息</dt>
                         <dd>个人信息：张威 / 男 / 22岁</dd>
                         <dd>教育经历：郑州大学软件工程专业 (2012.9 - 2016.7)</dd>
+                        <dd>工作经验：1年</dd>
                         <dd>github：<a href="https://www.github.com/wzh1002" target="_blank">https://www.github.com/wzh1002</a></dd>
                         <dd>blog：<a href="http://www.wzh1002.com/blog/">http://www.wzh1002.com/blog/</a></dd>
                     </dl>
@@ -35,6 +36,12 @@
                     <dl>
                         <dt>应聘岗位</dt>
                         <dd>前端工程师</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt>期望薪资</dt>
+                        <dd>8-10k 特别喜欢的可例外</dd>
                     </dl>
                 </li>
             </ul>
@@ -70,21 +77,15 @@
                                         <a href="https://wzh1002.github.io/IM/view/main/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
                                     <p class="des">
-                                        项目使用原生ES5编写，没有依赖其他框架或库。自己封装了一个常用的工具函数库，实现了数据监听、DOM事件代理、消息总线等常用函数。
-                                        并且通过这些函数构建了一个小的框架用于该项目，将页面划分成了多个模块、各模块间通过消息总线传递消息进行调用。
-                                        扩展了数组的方法，使其能在push或remove时自动更新DOM。</p>
-                                    <p class="des">样式使用SCSS编写，整个项目用gulp进行打包。</p>
-                                    <p class="des">在前端mock了socketIo和数据库。使用了localStorage对数据进行持久化。</p>
-                                </li>
-                                <li>
-                                    <i class="dot"></i>
-                                    <h4>
-                                        resume
-                                        <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/resume/" target="_blank"><i class="icon-link"></i>源代码</a>
-                                        <a href="https://wzh1002.github.io/resume/" target="_blank"><i class="icon-link"></i>demo</a>
-                                    </h4>
+                                        简介：一个IM项目，使用原生ES5编写，没有依赖其他框架或库，样式使用SCSS编写，在前端mock了socketIo和数据库，使用了localStorage对数据进行持久化，整个项目用gulp进行打包。
+                                    </p>
                                     <p class="des">
-                                        个人简历，描述自己的工作经验和项目经历，SCSS + gulp
+                                        总结：整个项目的目的是用来锻炼个人基础所以没有使用任何框架或库，基于自己当时对组件化的理解，将整个项目划分成了一个个的组件，为了降低耦合性，组件之间
+                                        通信通过事件机制传递，为此实现了一个消息总线，用于组件间的通信。为了将逻辑层与UI层进行解耦，将组件的状态与组件的渲染进行绑定，为此实现了数据监听，当组件的状态变化时、自动更新对应的视图，
+                                        为了解决不能监听数组中数据的增加与删除、扩展了数组的方法使其在push和remove时也能触发视图更新。封装了一些常用函数并组装成了一个小的框架用于该项目。
+                                    </p>
+                                    <p class="des">
+                                        收获：认识到项目架构的重要性，更深刻的认识到了组件化对于前端开发的重要性，以及业务逻辑与视图分离带来的好处。
                                     </p>
                                 </li>
                             </ul>
@@ -101,9 +102,9 @@
                                     <i class="dot"></i>
                                     <h4>Javascript</h4>
                                     <p class="des">熟练使用原生JavaScript完成页面交互和功能实现，能够运用原生JS封装简单插件，能脱离各种库或框架进行开发。</p>
-                                    <p class="des">了解Javascript的设计模式、能够运用模块化、面向对象的方式进行编程。</p>
+                                    <p class="des">了解Javascript的设计模式、能够运用模块化、面向对象的方式进行编程，了解amd、cmd规范。</p>
                                     <p class="des">了解ajax原理，了解浏览器的同源机制、熟悉常用的几种跨域解决方法。</p>
-                                    <p class="des">熟悉jQuery、能够原生实现jQuery中的大部分功能，了解Vue.js和React的使用以及部分实现原理，对ES6有一定的了解。了解Promise的工作原理，并使用ES5实现了一个Promise，在博客上有写关于实现的思路以及具体的实现。</p>
+                                    <p class="des">熟悉jQuery、能够原生实现jQuery中的部分常用功能，了解Vue.js和React的使用以及部分实现原理，对ES6有一定的了解。了解Promise的工作原理，并使用ES5实现了一个Promise，在博客上有写关于实现的思路以及具体的实现。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
@@ -114,7 +115,7 @@
                                 <li>
                                     <i class="dot"></i>
                                     <h4>其他</h4>
-                                    <p class="des">熟悉gulp的流式处理、了解webpack的使用，熟悉正则表达式，了解前端安全，性能优化方面的一些知识。</p>
+                                    <p class="des">熟悉gulp的流式处理、了解webpack的使用，了解正则表达式，了解http协议，了解前端安全，性能优化方面的一些知识。</p>
                                 </li>
                             </ul>
                         </dd>
