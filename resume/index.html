@@ -19,7 +19,7 @@
                     <dl>
                         <dt>基本信息</dt>
                         <dd>个人信息：张威 / 男 / 22岁</dd>
-                        <dd>教育经历：郑州大学软件工程专业 (2012.9 - 2016.7)</dd>
+                        <dd>教育经历：郑州大学软件工程专业</dd>
                         <dd>工作经验：1年</dd>
                         <dd>github：<a href="https://www.github.com/wzh1002" target="_blank">https://www.github.com/wzh1002</a></dd>
                         <dd>blog：<a href="http://www.wzh1002.com/blog/">http://www.wzh1002.com/blog/</a></dd>
@@ -38,12 +38,6 @@
                         <dd>前端工程师</dd>
                     </dl>
                 </li>
-                <li>
-                    <dl>
-                        <dt>期望薪资</dt>
-                        <dd>8-10k 特别喜欢的可例外</dd>
-                    </dl>
-                </li>
             </ul>
         </aside>
         <main class="main">
@@ -59,7 +53,7 @@
                                     <h4>学做网</h4>
                                     <p class="des">
                                         一个面向学校使用的教育学习平台。主要负责的部分有：<br/>
-                                        1. 用户间IM的开发，通过webSocket进行通信，使用RabbitMQ做消息持久化。<br/>
+                                        1. 系统中IM模块的开发，通过webSocket进行通信，使用RabbitMQ做消息持久化。<br/>
                                         2. 负责用户个人主页、教师评分、实时监控用户学习情况等页面的开发，主要用到jQuery、Underscore和Bootstrap。<br/>
                                         团队成员之间使用git进行协作。
                                     </p>
@@ -77,15 +71,37 @@
                                         <a href="https://wzh1002.github.io/IM/view/main/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
                                     <p class="des">
-                                        简介：一个IM项目，使用原生ES5编写，没有依赖其他框架或库，样式使用SCSS编写，在前端mock了socketIo和数据库，使用了localStorage对数据进行持久化，整个项目用gulp进行打包。
+                                        一个web端的IM，原生ES5 + SCSS + Gulp。
                                     </p>
                                     <p class="des">
-                                        总结：整个项目的目的是用来锻炼个人基础所以没有使用任何框架或库，基于自己当时对组件化的理解，将整个项目划分成了一个个的组件，为了降低耦合性，组件之间
-                                        通信通过事件机制传递，为此实现了一个消息总线，用于组件间的通信。为了将逻辑层与UI层进行解耦，将组件的状态与组件的渲染进行绑定，为此实现了数据监听，当组件的状态变化时、自动更新对应的视图，
-                                        为了解决不能监听数组中数据的增加与删除、扩展了数组的方法使其在push和remove时也能触发视图更新。封装了一些常用函数并组装成了一个小的框架用于该项目。
+                                        1.利用事件注册机制对模块进行解耦。<br/>
+                                        2.利用ES5的存取器属性完成对数据的劫持监听。<br/>
+                                        3.拓展数组方法以监听数组中数据的变化。
                                     </p>
                                     <p class="des">
-                                        收获：认识到项目架构的重要性，更深刻的认识到了组件化对于前端开发的重要性，以及业务逻辑与视图分离带来的好处。
+                                        认识到项目架构的重要性、组件化对于前端开发的重要性，以及业务逻辑与视图分离带来的好处。
+                                    </p>
+                                </li>
+                                <li>
+                                    <i class="dot"></i>
+                                    <h4>
+                                        使用Vue实现的TodoMVC
+                                            <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/TodoMVC/Vue" target="_blank"><i class="icon-link"></i>源代码</a>
+                                        <a href="https://wzh1002.github.io/TodoMVC/Vue/" target="_blank"><i class="icon-link"></i>demo</a>
+                                    </h4>
+                                    <p class="des">
+                                        Vue + ES6 + webpack
+                                    </p>
+                                </li>
+                                <li>
+                                    <i class="dot"></i>
+                                    <h4>
+                                        使用React实现的TodoMVC
+                                        <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/TodoMVC/React" target="_blank"><i class="icon-link"></i>源代码</a>
+                                        <a href="https://wzh1002.github.io/TodoMVC/React/" target="_blank"><i class="icon-link"></i>demo</a>
+                                    </h4>
+                                    <p class="des">
+                                        React + ES6 + Gulp
                                     </p>
                                 </li>
                             </ul>
@@ -100,11 +116,11 @@
                             <ul class="exp">
                                 <li>
                                     <i class="dot"></i>
-                                    <h4>Javascript</h4>
+                                    <h4>JavaScript</h4>
                                     <p class="des">熟练使用原生JavaScript完成页面交互和功能实现，能够运用原生JS封装简单插件，能脱离各种库或框架进行开发。</p>
-                                    <p class="des">了解Javascript的设计模式、能够运用模块化、面向对象的方式进行编程，了解amd、cmd规范。</p>
+                                    <p class="des">了解JavaScript的设计模式、能够运用模块化、面向对象的方式进行编程，了解AMD、CMD规范。</p>
                                     <p class="des">了解ajax原理，了解浏览器的同源机制、熟悉常用的几种跨域解决方法。</p>
-                                    <p class="des">熟悉jQuery、能够原生实现jQuery中的部分常用功能，了解Vue.js和React的使用以及部分实现原理，对ES6有一定的了解。了解Promise的工作原理，并使用ES5实现了一个Promise，在博客上有写关于实现的思路以及具体的实现。</p>
+                                    <p class="des">熟悉jQuery、能够原生实现jQuery中的部分常用功能，了解Vue和React的使用以及部分实现原理，对ES6有一定的了解。了解Promise的工作原理，并使用ES5实现了一个Promise，在博客上有写关于实现的思路以及具体的实现。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
@@ -125,12 +141,12 @@
                                 <li>
                                     <i class="dot"></i>
                                     <h4>Node.js</h4>
-                                    <p class="des">对Node.js有一定了解，有基于express的web开发经验。能够使用Node.js搭建mock服务器和一些小型网站，用mongodb做数据存储、redis做session存储。</p>
+                                    <p class="des">对Node.js有一定了解，有基于Express的web开发经验。能够使用Node.js搭建mock服务器和一些小型网站，用mongodb做数据存储、redis做session存储。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
                                     <h4>Linux</h4>
-                                    <p class="des">对Linux 服务器环境搭建部署有一定了解，在Linux上通过pm2部署过node.js服务，配置过nginx用于将外网的访问转到对应的服务器上、写过开机后服务自启动脚本。</p>
+                                    <p class="des">对Linux 服务器环境搭建部署有一定了解，在Linux上通过pm2部署过Node.js服务，配置过nginx用于将外网的访问转到对应的服务器上、写过开机后服务自启动脚本。</p>
                                 </li>
                             </ul>
                         </dd>
