@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>张威的简历</title>
-    <meta name="description" content="我是一个充满活力、对前端由衷热爱、善于发现问题的前端工程师。我目前正在寻找前端工程师岗位，希望借此机会为贵司献上我的一点绵薄之力，快招我到碗里来吧！">
+    <meta name="description" content="If you can't explain it simply, you don't understand it well enough">
     <meta name="keywords" content="前端、简历、工作">
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="./dist/css/style.min.css">
@@ -21,8 +21,8 @@
                         <dd>个人信息：张威 / 男 / 22岁</dd>
                         <dd>教育经历：郑州大学软件工程专业</dd>
                         <dd>工作经验：1年</dd>
-                        <dd>github：<a href="https://www.github.com/wzh1002" target="_blank">https://www.github.com/wzh1002</a></dd>
-                        <dd>blog：<a href="http://www.wzh1002.com/blog/">http://www.wzh1002.com/blog/</a></dd>
+                        <dd>GitHub：<a href="https://www.github.com/wzh1002" target="_blank">https://www.github.com/wzh1002</a></dd>
+                        <dd>Blog：<a href="http://www.wzh1002.com/blog/">http://www.wzh1002.com/blog/</a></dd>
                     </dl>
                 </li>
                 <li>
@@ -51,11 +51,13 @@
                                 <li>
                                     <i class="dot"></i>
                                     <h4>学做网</h4>
+                                    <p class="des">一个面向职业院校使用的教育学习平台。</p>
                                     <p class="des">
-                                        一个面向学校使用的教育学习平台。主要负责的部分有：<br/>
-                                        1. 系统中IM模块的开发，通过webSocket进行通信，使用RabbitMQ做消息持久化。<br/>
-                                        2. 负责用户个人主页、教师评分、实时监控用户学习情况等页面的开发，主要用到jQuery、Underscore和Bootstrap。<br/>
-                                        团队成员之间使用git进行协作。
+                                        主要工作：<br/>
+                                        1. 负责系统中IM模块的开发，通过webSocket进行通信，使用RabbitMQ做消息持久化。利用canvas在页面上完成图片的压缩<br/>
+                                        2. 协同团队成员完成其他模块的前端页面开发。<br/>
+                                        3. 为了监控系统前端异常、处理偶发性Bug，在前端封装了log模块并专门用Node.js写了一个服务用于收集错误信息。<br/>
+                                        4. 封装通用组件(头部导航栏、登陆注册等)、以及常用函数。
                                     </p>
                                 </li>
                             </ul>
@@ -68,29 +70,39 @@
                                     <h4>
                                         IM
                                         <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/IM" target="_blank"><i class="icon-link"></i>源代码</a>
-                                        <a href="https://wzh1002.github.io/IM/view/main/" target="_blank"><i class="icon-link"></i>demo</a>
+                                        <a href="http://www.wzh1002.com/IM/view/main/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
                                     <p class="des">
-                                        一个web端的IM，原生ES5 + SCSS + Gulp。
+                                        一个Web端的IM，原生ES5 + Sass + Gulp。
                                     </p>
                                     <p class="des">
                                         1.利用事件注册机制对模块进行解耦。<br/>
-                                        2.利用ES5的存取器属性完成对数据的劫持监听。<br/>
+                                        2.利用ES5中的对象存取器属性完成对数据的劫持监听。<br/>
                                         3.拓展数组方法以监听数组中数据的变化。
                                     </p>
                                     <p class="des">
-                                        认识到项目架构的重要性、组件化对于前端开发的重要性，以及业务逻辑与视图分离带来的好处。
+                                        认识到项目架构、组件化对于前端开发的重要性，以及业务逻辑与视图分离带来的好处。
+                                    </p>
+                                </li>
+                                <li>
+                                    <i class="dot"></i>
+                                    <h4>
+                                        JS常用函数库
+                                        <a href="https://github.com/wzh1002/utils" target="_blank"><i class="icon-link"></i>源代码</a>
+                                    </h4>
+                                    <p class="des">
+                                        目前有(Promise、数据劫持监听、DOM事件代理等)
                                     </p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
                                     <h4>
                                         使用Vue实现的TodoMVC
-                                            <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/TodoMVC/Vue" target="_blank"><i class="icon-link"></i>源代码</a>
-                                        <a href="https://wzh1002.github.io/TodoMVC/Vue/" target="_blank"><i class="icon-link"></i>demo</a>
+                                        <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/TodoMVC/Vue" target="_blank"><i class="icon-link"></i>源代码</a>
+                                        <a href="http://www.wzh1002.com/TodoMVC/Vue/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
                                     <p class="des">
-                                        Vue + ES6 + webpack
+                                        Vue的练习项目，Vue + ES6 + Webpack
                                     </p>
                                 </li>
                                 <li>
@@ -98,10 +110,10 @@
                                     <h4>
                                         使用React实现的TodoMVC
                                         <a href="https://github.com/wzh1002/wzh1002.github.io/tree/master/TodoMVC/React" target="_blank"><i class="icon-link"></i>源代码</a>
-                                        <a href="https://wzh1002.github.io/TodoMVC/React/" target="_blank"><i class="icon-link"></i>demo</a>
+                                        <a href="http://www.wzh1002.com/TodoMVC/React/" target="_blank"><i class="icon-link"></i>demo</a>
                                     </h4>
                                     <p class="des">
-                                        React + ES6 + Gulp
+                                        React的练习项目，React + ES6 + Gulp
                                     </p>
                                 </li>
                             </ul>
@@ -117,21 +129,24 @@
                                 <li>
                                     <i class="dot"></i>
                                     <h4>JavaScript</h4>
-                                    <p class="des">熟练使用原生JavaScript完成页面交互和功能实现，能够运用原生JS封装简单插件，能脱离各种库或框架进行开发。</p>
-                                    <p class="des">了解JavaScript的设计模式、能够运用模块化、面向对象的方式进行编程，了解AMD、CMD规范。</p>
-                                    <p class="des">了解ajax原理，了解浏览器的同源机制、熟悉常用的几种跨域解决方法。</p>
-                                    <p class="des">熟悉jQuery、能够原生实现jQuery中的部分常用功能，了解Vue和React的使用以及部分实现原理，对ES6有一定的了解。了解Promise的工作原理，并使用ES5实现了一个Promise，在博客上有写关于实现的思路以及具体的实现。</p>
+                                    <p class="des">熟悉ES5、ES6标准，能脱离库和框架进行开发。</p>
+                                    <p class="des">熟悉jQuery、能够原生实现jQuery中的部分常用功能。</p>
+                                    <p class="des">熟悉AJAX原理、浏览器的同源机制，熟悉常用的几种跨域解决方法。</p>
+                                    <p class="des">熟悉Promise的工作原理，并使用ES5实现了一个Promise，在博客上有写关于实现的思路以及具体的实现。</p>
+                                    <p class="des">了解JavaScript的设计模式，能够运用模块化、面向对象的方式进行编程，了解AMD、CMD规范。</p>
+                                    <p class="des">了解Vue和React的使用以及部分实现原理。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
                                     <h4>HTML/CSS</h4>
-                                    <p class="des">熟悉HTML5/CSS3新特性，对Web语义化有一定了解，能够编写语义化的 HTML，模块化的 CSS，完成较复杂的布局。</p>
-                                    <p class="des">熟悉 Sass / Autoprefixer 等CSS预处理和后处理方法、工具。了解flex布局。</p>
+                                    <p class="des">熟悉HTML5/CSS3新特性，对Web语义化有一定了解，熟悉Flex布局。</p>
+                                    <p class="des">熟悉 Sass / Autoprefixer 等CSS预处理和后处理方法、工具。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
                                     <h4>其他</h4>
-                                    <p class="des">熟悉gulp的流式处理、了解webpack的使用，了解正则表达式，了解http协议，了解前端安全，性能优化方面的一些知识。</p>
+                                    <p class="des">熟悉Gulp的流式处理、了解Webpack的使用。</p>
+                                    <p class="des">熟悉正则表达式，了解HTTP协议以及前端安全、性能优化方面的一些知识。</p>
                                 </li>
                             </ul>
                         </dd>
@@ -141,12 +156,12 @@
                                 <li>
                                     <i class="dot"></i>
                                     <h4>Node.js</h4>
-                                    <p class="des">对Node.js有一定了解，有基于Express的web开发经验。能够使用Node.js搭建mock服务器和一些小型网站，用mongodb做数据存储、redis做session存储。</p>
+                                    <p class="des">对Node.js有一定了解，有基于Express的web开发经验。搭建过Mock Server和简单的网站。</p>
                                 </li>
                                 <li>
                                     <i class="dot"></i>
                                     <h4>Linux</h4>
-                                    <p class="des">对Linux 服务器环境搭建部署有一定了解，在Linux上通过pm2部署过Node.js服务，配置过nginx用于将外网的访问转到对应的服务器上、写过开机后服务自启动脚本。</p>
+                                    <p class="des">有Linux服务器环境搭建部署经验，在Linux上通过pm2部署过Node.js服务，配置过nginx用于将外网的访问转到对应的服务器上、写过开机后服务自启动脚本。</p>
                                 </li>
                             </ul>
                         </dd>
