@@ -1,0 +1,715 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="delegated event,jquery," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;原生es5实现DOM事件监听与代理">
+<meta name="keywords" content="delegated event,jquery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生es5实现事件代理">
+<meta property="og:url" content="https://wzh1002.github.io/blog/2017/04/04/event-proxy/index.html">
+<meta property="og:site_name" content="wzh1002">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;原生es5实现DOM事件监听与代理">
+<meta property="og:updated_time" content="2017-05-26T08:35:15.349Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生es5实现事件代理">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;原生es5实现DOM事件监听与代理">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wzh1002.github.io/blog/2017/04/04/event-proxy/"/>
+
+
+
+
+
+  <title>原生es5实现事件代理 | wzh1002</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wzh1002</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">wait</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://wzh1002.github.io/blog/blog/2017/04/04/event-proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wzh1002">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wzh1002">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">原生es5实现事件代理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-04T15:47:29+08:00">
+                2017-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/扯淡/" itemprop="url" rel="index">
+                    <span itemprop="name">扯淡</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&emsp;&emsp;原生es5实现DOM事件监听与代理</p>
+<a id="more"></a>
+<p>&emsp;&emsp;说到DOM事件代理，应该都不陌生。它是通过DOM事件的冒泡来实现的，而在平常的项目里面很多时候我们都需要用到事件代理。<br>&emsp;&emsp;举个例子。当我们的网页中有大量的图片，并且需要在点击图片的时候实现一个放大镜的效果，这个时候我们就需要用到事件代理了，不然就要在每张图片一个个的绑定click事件(手动滑稽)。当然，类似的例子还有很多。<br>&emsp;&emsp;说到事件代理，估计用的最多的就是jQuery中的on方法了，下面先简单的实现一个事件代理。<br>&emsp;&emsp;首先，因为DOM事件会冒泡上来，所以我们需要的是在对事件进行代理的元素上添加一个改类型的监听函数，并且在监听函数内判断事件的目标元素是否是我们所需要代理的元素，如果是，则执行回调函数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//ele进行代理的祖先元素，type事件类型，selector被代理元素的选择器，callback回调函数</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">on</span>(<span class="params">ele, type, selector, callback</span>) </span>&#123;</div><div class="line">     <span class="keyword">if</span> (!(ele <span class="keyword">instanceof</span> Element || ele === <span class="built_in">document</span> || ele === <span class="built_in">window</span>)) &#123;</div><div class="line">         <span class="keyword">return</span> <span class="built_in">console</span>.error(<span class="string">'ele is not a Element !'</span>);</div><div class="line">     &#125;</div><div class="line">     ele.addEventListener(type, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</div><div class="line">         <span class="keyword">var</span> target = event.target;</div><div class="line">         <span class="keyword">var</span> result = match(target, selector);</div><div class="line">         <span class="keyword">if</span> (result) &#123;</div><div class="line">            callback.call(target, event);</div><div class="line">         &#125;</div><div class="line">     &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">match</span>(<span class="params">ele, selector</span>) </span>&#123;</div><div class="line">     <span class="comment">//selector css选择器，这里只实现了常用的几个单一的选择器</span></div><div class="line">     <span class="keyword">var</span> flag = selector.charAt(<span class="number">0</span>);</div><div class="line">     <span class="keyword">var</span> result = <span class="literal">false</span>;</div><div class="line">     <span class="keyword">if</span> (flag === <span class="string">'#'</span>) &#123;   <span class="comment">//判断id是否符合</span></div><div class="line">         result = ele.id === selector.slice(<span class="number">1</span>);</div><div class="line">     &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag === <span class="string">'.'</span>) &#123;  <span class="comment">//判断类名是否符合</span></div><div class="line">         result = (<span class="string">' '</span> + ele.className + <span class="string">' '</span>).indexOf(<span class="string">' '</span> + selector.slice(<span class="number">1</span>) + <span class="string">' '</span>) !== <span class="number">-1</span>;</div><div class="line">     &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag === <span class="string">'['</span>) &#123;  <span class="comment">//判断属性是否符合</span></div><div class="line">         <span class="keyword">var</span> arr = selector.slice(<span class="number">1</span>, <span class="number">-1</span>).split(<span class="string">'='</span>);</div><div class="line">         result = arr[<span class="number">1</span>] ? ele.getAttribute(arr[<span class="number">0</span>]) === arr[<span class="number">1</span>] : ele.getAttribute(arr[<span class="number">0</span>]) !== <span class="literal">null</span>;</div><div class="line">     &#125; <span class="keyword">else</span> &#123;  <span class="comment">//判断标签名是否符合</span></div><div class="line">         result = ele.tagName.toLowerCase() === selector.toLowerCase();</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;上面的例子就是一个事件代理的不完全版本了，为什么说是不完全呢？</p>
+<ol>
+<li>没有考虑到兼容问题。</li>
+<li>不支持复杂的选择器。</li>
+<li>当事件的产生元素是目标元素的子元素时，按照期望，监听事件应该被触发。但是上面的例子是不会触发的。并且在实际情况中，匹配元素可能嵌套(某一个元素匹配，并且祖先元素也匹配)</li>
+</ol>
+<p>&emsp;&emsp;修改match函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">match</span>(<span class="params">ancestor, child, selector, arr</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> flag = selector.charAt(<span class="number">0</span>);</div><div class="line">      <span class="keyword">var</span> result = <span class="literal">false</span>;</div><div class="line">      arr = arr <span class="keyword">instanceof</span> <span class="built_in">Array</span> ? arr : [];</div><div class="line">      <span class="keyword">if</span> (ancestor === child || child.parentNode === <span class="literal">null</span>) &#123;</div><div class="line">           <span class="keyword">return</span> arr;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (flag === <span class="string">'#'</span>) &#123;</div><div class="line">           result = child.id === selector.slice(<span class="number">1</span>);</div><div class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag === <span class="string">'.'</span>) &#123;</div><div class="line">           result = (<span class="string">' '</span> + child.className + <span class="string">' '</span>).indexOf(<span class="string">' '</span> + selector.slice(<span class="number">1</span>) + <span class="string">' '</span>) !== <span class="number">-1</span>;</div><div class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag === <span class="string">'['</span>) &#123;</div><div class="line">           <span class="keyword">var</span> arr1 = selector.slice(<span class="number">1</span>, <span class="number">-1</span>).split(<span class="string">'='</span>);</div><div class="line">           result = arr1[<span class="number">1</span>] ? child.getAttribute(arr[<span class="number">0</span>]) === arr1[<span class="number">1</span>] : child.getAttribute(arr1[<span class="number">0</span>]) !== <span class="literal">null</span>;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">           result = child.tagName.toLowerCase() === selector.toLowerCase();</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (result) &#123;</div><div class="line">           arr.push(child);</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> match(ancestor, child.parentNode, selector, arr);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;match函数通过递归来查找产生事件的元素以及其到代理元素间的祖先元素中匹配的元素，并返回一个包括这些元素的数组。返回数组的原因是在DOM树中，可能代理元素的后代节点中有多层都满足匹配条件。<br>&emsp;&emsp;然后对应的修改on函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">on</span>(<span class="params">ele, type, selector, callback</span>) </span>&#123;</div><div class="line">     <span class="keyword">if</span> (!(ele <span class="keyword">instanceof</span> Element || ele === <span class="built_in">document</span> || ele === <span class="built_in">window</span>)) &#123;</div><div class="line">         <span class="keyword">return</span> <span class="built_in">console</span>.error(<span class="string">'ele is not a Element !'</span>);</div><div class="line">     &#125;</div><div class="line">     ele.addEventListener(type, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</div><div class="line">         <span class="keyword">var</span> target = event.target;</div><div class="line">         <span class="comment">// 这里的result返回的是一个包含着符合匹配规则的元素的数组</span></div><div class="line">         <span class="keyword">var</span> result = match(ele, target, selector);</div><div class="line">         <span class="keyword">if</span> (result) &#123;</div><div class="line">            result.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">target</span>) </span>&#123;</div><div class="line">                callback.call(target, event);</div><div class="line">            &#125;);</div><div class="line">         &#125;</div><div class="line">     &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;然后再考虑到兼容性，众所周知，早期浏览器厂商的实现都不大一样，如果要兼容老版本(主要还是IE)，还需要修改。<br>&emsp;&emsp;首先，在IE6-IE8(现在还是有兼容IE8的需求)中，事件模型与标准不同。使用非标准的 element.attachEvent() 方法绑定事件监听器。在该模型中，事件对象有一个 srcElement 属性，等价于target 属性。<br>&emsp;&emsp;这样我们就需要封装一个用于事件监听的函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addEvent</span>(<span class="params">ele, type, callback</span>) </span>&#123;</div><div class="line">     <span class="keyword">if</span> (<span class="keyword">typeof</span> ele.addEventListener === <span class="string">'function'</span>) &#123;</div><div class="line">          ele.addEventListener(type, callback);</div><div class="line">     &#125; <span class="keyword">else</span> &#123;</div><div class="line">          ele.attachEvent(<span class="string">'on'</span> + type, callback);</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;再修改on函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">on</span>(<span class="params">ele, type, selector, callback</span>) </span>&#123;</div><div class="line">     <span class="keyword">if</span> (!(ele <span class="keyword">instanceof</span> Element || ele === <span class="built_in">document</span> || ele === <span class="built_in">window</span>)) &#123;</div><div class="line">         <span class="keyword">return</span> <span class="built_in">console</span>.error(<span class="string">'ele is not a Element !'</span>);</div><div class="line">     &#125;</div><div class="line">     addEvent(ele, type, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</div><div class="line">         <span class="comment">// target是标准，srcElement是早期IE的实现，现在的浏览器实现中一般两个属性都有</span></div><div class="line">         <span class="keyword">var</span> target = event.target || event.srcElement;</div><div class="line">         <span class="comment">// 这里的result返回的是一个包含着符合匹配规则的元素的数组</span></div><div class="line">         <span class="keyword">var</span> result = match(ele, target, selector);</div><div class="line">         <span class="keyword">if</span> (result) &#123;</div><div class="line">            result.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">ele</span>) </span>&#123;</div><div class="line">                callback.call(ele, event);</div><div class="line">            &#125;);</div><div class="line">         &#125;</div><div class="line">     &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;写到这，on函数就基本能够满足日常使用了。<br>&emsp;&emsp;下面是一个完整的实例。可以直接对元素进行DOM事件监听，也封装了阻止事件冒泡和默认行为的细节。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">on</span>(<span class="params">ele, type, selector, callback</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> length = <span class="built_in">arguments</span>.length, func;</div><div class="line">    <span class="keyword">if</span> (!(ele <span class="keyword">instanceof</span> Element || ele === <span class="built_in">document</span> || ele === <span class="built_in">window</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="built_in">console</span>.error(<span class="string">'ele is not a Element !'</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (length === <span class="number">3</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">arguments</span>[<span class="number">2</span>] === <span class="string">'function'</span>) &#123;</div><div class="line">            addEvent(ele, type, <span class="built_in">arguments</span>[<span class="number">2</span>]);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">console</span>.error(<span class="string">'callback is not a function'</span>);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (length === <span class="number">4</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> callback === <span class="string">'function'</span>) &#123;</div><div class="line">            func = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">               proxyEvent(e, callback);</div><div class="line">            &#125;</div><div class="line">            addEvent(ele, type, func);</div><div class="line">            <span class="comment">// 返回该函数，在移除DOM监听的时候需要用到</span></div><div class="line">            <span class="keyword">return</span> func;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">console</span>.error(<span class="string">'callback is not a function'</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">proxyEvent</span>(<span class="params">e, callback</span>) </span>&#123;</div><div class="line">        e = e || <span class="built_in">window</span>.event;</div><div class="line">        <span class="keyword">var</span> src = e.target || e.srcElement;</div><div class="line">        <span class="keyword">var</span> currentTarget = e.currentTarget;</div><div class="line">        <span class="keyword">var</span> result = match(currentTarget, src, selector);</div><div class="line">        result.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">target</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (target <span class="keyword">instanceof</span> Element) &#123;</div><div class="line">                <span class="keyword">if</span> (callback) &#123;</div><div class="line">                    callback.call(target, e);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">match</span>(<span class="params">ancestor, child, selector, arr</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> flag = selector.charAt(<span class="number">0</span>);</div><div class="line">            <span class="keyword">var</span> result = <span class="literal">false</span>;</div><div class="line">            arr = arr <span class="keyword">instanceof</span> <span class="built_in">Array</span> ? arr : [];</div><div class="line">            <span class="keyword">if</span> (ancestor === child || child.parentNode === <span class="literal">null</span>) &#123;</div><div class="line">                <span class="keyword">return</span> arr;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (flag === <span class="string">'#'</span>) &#123;</div><div class="line">                result = child.id === selector.slice(<span class="number">1</span>);</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag === <span class="string">'.'</span>) &#123;</div><div class="line">                result = (<span class="string">' '</span> + child.className + <span class="string">' '</span>).indexOf(<span class="string">' '</span> + selector.slice(<span class="number">1</span>) + <span class="string">' '</span>) !== <span class="number">-1</span>;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag === <span class="string">'['</span>) &#123;</div><div class="line">                <span class="keyword">var</span> arr1 = selector.slice(<span class="number">1</span>, <span class="number">-1</span>).split(<span class="string">'='</span>);</div><div class="line">                result = arr1[<span class="number">1</span>] ? child.getAttribute(arr1[<span class="number">0</span>]) === arr1[<span class="number">1</span>] : child.getAttribute(arr1[<span class="number">0</span>]) !== <span class="literal">null</span>;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                result = child.tagName.toLowerCase() === selector.toLowerCase();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (result) &#123;</div><div class="line">                arr.push(child);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> match(ancestor, child.parentNode, selector, arr);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">addEvent</span>(<span class="params">ele, type, callback</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> ele.addEventListener === <span class="string">'function'</span>) &#123;</div><div class="line">            ele.addEventListener(type, callback);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            ele.attachEvent(<span class="string">'on'</span> + type, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">                callback(fixEvent(e));</div><div class="line">            &#125;);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">fixEvent</span>(<span class="params">event</span>) </span>&#123;</div><div class="line">            event.preventDefault = fixEvent.preventDefault;</div><div class="line">            event.stopPropagation = fixEvent.stopPropagation;</div><div class="line">            <span class="keyword">return</span> event;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        fixEvent.preventDefault = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">this</span>.returnValue = <span class="literal">false</span>;</div><div class="line">        &#125;;</div><div class="line">        fixEvent.stopPropagation = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">this</span>.cancelBubble = <span class="literal">true</span>;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>先写到这，文笔不好，有看官的话就将就着看好了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/delegated-event/" rel="tag"># delegated event</a>
+          
+            <a href="/blog/tags/jquery/" rel="tag"># jquery</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/03/24/create-blog/" rel="next" title="hexo搭建博客">
+                <i class="fa fa-chevron-left"></i> hexo搭建博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2017/04/06/watch/" rel="prev" title="数据对象变化的监听">
+                数据对象变化的监听 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/blog/images/avatar.gif"
+               alt="wzh1002" />
+          <p class="site-author-name" itemprop="name">wzh1002</p>
+           
+              <p class="site-description motion-element" itemprop="description">If you can't explain it simply, you don't understand it well enough</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wzh1002</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
