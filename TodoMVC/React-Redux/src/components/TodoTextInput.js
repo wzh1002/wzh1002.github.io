@@ -1,8 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { classNames } from '../utils';
 import { ESCAPE_KEY, ENTER_KEY } from '../constants/Keys';
 
 class TodoTextInput extends Component {
+
+    static propTypes = {
+        onSave: PropTypes.func.isRequired,
+        text: PropTypes.string,
+        placeholder: PropTypes.string,
+        editing: PropTypes.bool,
+        newTodo: PropTypes.bool
+    }
 
     state = {
         text: this.props.text ||  ''

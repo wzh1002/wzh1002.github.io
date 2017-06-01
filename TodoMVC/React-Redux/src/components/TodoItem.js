@@ -1,9 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { classNames } from '../utils';
 import TodoTextInput from './TodoTextInput';
 
 
 class TodoItem extends Component {
+
+    static propTypes = {
+        todo: PropTypes.object.isRequired,
+        editTodo: PropTypes.func.isRequired,
+        completeTodo: PropTypes.func.isRequired,
+        deleteTodo: PropTypes.func.isRequired
+    }
 
     state = {
         editing: false

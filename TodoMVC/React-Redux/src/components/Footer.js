@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { pluralize, classNames } from '../utils';
 import { ALL, ACTIVE, COMPLETED } from '../constants/TodoFilters';
 import { Router } from 'director/build/director';
@@ -16,6 +16,14 @@ const FILTER_LINK = {
 };
 
 class Footer extends Component {
+
+    static propTypes = {
+        completedCount: PropTypes.number.isRequired,
+        activeCount: PropTypes.number.isRequired,
+        filter: PropTypes.string.isRequired,
+        onClearCompleted: PropTypes.func.isRequired,
+        onShow: PropTypes.func.isRequired
+    }
 
     componentDidMount() {
         let { onShow } = this.props;

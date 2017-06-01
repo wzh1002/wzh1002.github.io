@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import TodoTextInput from './TodoTextInput';
 
 class Header extends Component {
+
+    static propTypes = {
+        addTodo: PropTypes.func.isRequired
+    }
 
     handleSave = text => {
         text.length !== 0 && this.props.addTodo(text);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { classNames } from '../utils';
 import TodoItem from './TodoItem';
 import Footer from './Footer';
@@ -11,6 +11,11 @@ const TODO_FILTERS = {
 };
 
 class MainSection extends Component {
+
+    static propTypes = {
+        todos: PropTypes.array.isRequired,
+        actions: PropTypes.object.isRequired
+    }
 
     state = {
         filter: ALL
