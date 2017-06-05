@@ -17,7 +17,13 @@ npm run dev
 # build for production with minification
 npm run build
 
-# ddl文件抽离
+# extract ddl file
 npm run ddl
+
+# mocha 
+npm run test
+
+# eslint
+npm run eslint
 ```
 

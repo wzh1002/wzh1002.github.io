@@ -7,9 +7,11 @@ import reducer from './reducers';
 import { fetch, save } from './utils';
 import { NAME_SPACE } from './constants/namespace';
 
-let store = createStore(reducer, fetch(NAME_SPACE));
+let store = createStore(reducer, {
+    todos: fetch(NAME_SPACE)
+});
 store.subscribe(() => {
-    save(NAME_SPACE, store.getState());
+    save(NAME_SPACE, store.getState().todos || []);
 });
 
 window.store = store;

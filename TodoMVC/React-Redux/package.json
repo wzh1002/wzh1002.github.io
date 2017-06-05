@@ -6,6 +6,8 @@
     "start": "cross-env NODE_ENV=development node server",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.dev.js",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "test": "mocha \"src/**/*.spec.js\" --compilers js:../../../../node_modules/babel-core/register",
+    "eslint": "eslint \"src/**/*.spec.js\"",
     "ddl": "cross-env NODE_ENV=development webpack --config ddl.config.js"
   },
   "devDependencies": {

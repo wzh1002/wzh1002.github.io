@@ -52,7 +52,7 @@ module.exports = {
         }),
         new ExtractTextPlugin("css/[name].css")
     ],
-    devtool: 'cheap-module-eval-source-map',
+    devtool: '#cheap-module-source-map',
     externals: {
         'react': 'React',
         'react-dom': 'ReactDOM',
