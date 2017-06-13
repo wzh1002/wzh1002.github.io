@@ -1,0 +1,976 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/blog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,React,Redux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;前段时间一直在学习React相关的技术栈，对Redux有了一定的了解。">
+<meta name="keywords" content="js,React,Redux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redux源码分析">
+<meta property="og:url" content="https://wzh1002.github.io/blog/2017/06/03/redux/index.html">
+<meta property="og:site_name" content="wzh1002">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;前段时间一直在学习React相关的技术栈，对Redux有了一定的了解。">
+<meta property="og:image" content="https://wzh1002.github.io/blog/img/blog6-1.png">
+<meta property="og:image" content="https://wzh1002.github.io/blog/img/blog6-3.png">
+<meta property="og:image" content="https://wzh1002.github.io/blog/img/blog6-3.png">
+<meta property="og:updated_time" content="2017-06-13T08:52:21.312Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redux源码分析">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;前段时间一直在学习React相关的技术栈，对Redux有了一定的了解。">
+<meta name="twitter:image" content="https://wzh1002.github.io/blog/img/blog6-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wzh1002.github.io/blog/2017/06/03/redux/"/>
+
+
+
+
+
+  <title>Redux源码分析 | wzh1002</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wzh1002</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">wait</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/blog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/blog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/blog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://wzh1002.github.io/blog/blog/2017/06/03/redux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wzh1002">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wzh1002">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Redux源码分析</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-03T10:36:04+08:00">
+                2017-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/扯淡/" itemprop="url" rel="index">
+                    <span itemprop="name">扯淡</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/blog/2017/06/03/redux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/blog/2017/06/03/redux/" class="leancloud_visitors" data-flag-title="Redux源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  6,049
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  29
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&emsp;&emsp;前段时间一直在学习React相关的技术栈，对Redux有了一定的了解。<br><a id="more"></a></p>
+<h2 id="结构分析"><a href="#结构分析" class="headerlink" title="结构分析"></a>结构分析</h2><p>从GitHub上找到Redux官方托管的代码，进入到src目录下可以看到这么些文件。<br><img src="/blog/img/blog6-1.png" alt="Redux"></p>
+<p>从目录上不难看出，Redux对外提供了5个方法(createStore、combineReducers、bindActionCreators、applyMiddleware、compost)。<br>index.js负责从当前目录下将其他5个提供方法的js文件引入，然后统一由index对外导出。</p>
+<h2 id="index"><a href="#index" class="headerlink" title="index"></a>index</h2><h3 id="个人猜想"><a href="#个人猜想" class="headerlink" title="个人猜想"></a>个人猜想</h3><p>在结构分析时有说到index负责统一对外导出。那么大致结构应该如下。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> createStore <span class="keyword">from</span> <span class="string">'./createStore'</span></div><div class="line"><span class="keyword">import</span> combineReducers <span class="keyword">from</span> <span class="string">'./combineReducers'</span></div><div class="line"><span class="keyword">import</span> bindActionCreators <span class="keyword">from</span> <span class="string">'./bindActionCreators'</span></div><div class="line"><span class="keyword">import</span> applyMiddleware <span class="keyword">from</span> <span class="string">'./applyMiddleware'</span></div><div class="line"><span class="keyword">import</span> compose <span class="keyword">from</span> <span class="string">'./compose'</span></div><div class="line"></div><div class="line"><span class="comment">// do some thing</span></div><div class="line"></div><div class="line"><span class="keyword">export</span> &#123;</div><div class="line">  createStore,</div><div class="line">  combineReducers,</div><div class="line">  bindActionCreators,</div><div class="line">  applyMiddleware,</div><div class="line">  compose</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="源码及对比分析"><a href="#源码及对比分析" class="headerlink" title="源码及对比分析"></a>源码及对比分析</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> createStore <span class="keyword">from</span> <span class="string">'./createStore'</span></div><div class="line"><span class="keyword">import</span> combineReducers <span class="keyword">from</span> <span class="string">'./combineReducers'</span></div><div class="line"><span class="keyword">import</span> bindActionCreators <span class="keyword">from</span> <span class="string">'./bindActionCreators'</span></div><div class="line"><span class="keyword">import</span> applyMiddleware <span class="keyword">from</span> <span class="string">'./applyMiddleware'</span></div><div class="line"><span class="keyword">import</span> compose <span class="keyword">from</span> <span class="string">'./compose'</span></div><div class="line"><span class="keyword">import</span> warning <span class="keyword">from</span> <span class="string">'./utils/warning'</span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line">* This is a dummy function to check if the function name has been altered by minification.</div><div class="line">* If the function has been minified and NODE_ENV !== 'production', warn the user.</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isCrushed</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (</div><div class="line">  process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</div><div class="line">  <span class="keyword">typeof</span> isCrushed.name === <span class="string">'string'</span> &amp;&amp;</div><div class="line">  isCrushed.name !== <span class="string">'isCrushed'</span></div><div class="line">) &#123;</div><div class="line">  warning(</div><div class="line">    <span class="string">'You are currently using minified code outside of NODE_ENV === \'production\'. '</span> +</div><div class="line">    <span class="string">'This means that you are running a slower development build of Redux. '</span> +</div><div class="line">    <span class="string">'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify '</span> +</div><div class="line">    <span class="string">'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) '</span> +</div><div class="line">    <span class="string">'to ensure you have the correct code for your production build.'</span></div><div class="line">  )</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> &#123;</div><div class="line">  createStore,</div><div class="line">  combineReducers,</div><div class="line">  bindActionCreators,</div><div class="line">  applyMiddleware,</div><div class="line">  compose</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>和猜想的一致，index负责将Redux的方法统一对外导出。其中isCrushed是用来检测我们是否对文件进行了压缩，因为压缩的时候会将把函数名uglify，所以通过判断函数名是否和预定义的函数名一直来检测当前代码是否被压缩。<br>process是Node.js内置的一个全局变量，可以获取当前进程的若干信息。在许多前端库中，经常会使用 process.env.NODE_ENV这个环境变量来判断当前是在开发环境还是生产环境中。</p>
+<h2 id="utils-warning"><a href="#utils-warning" class="headerlink" title="utils/warning"></a>utils/warning</h2><h3 id="个人猜想-1"><a href="#个人猜想-1" class="headerlink" title="个人猜想"></a>个人猜想</h3><p>在index.js中有直接使用到warning这个方法，从实际使用的情况上看，是对console.error的一个封装，不过应该还加入了在使用上可能出现的一些特殊情况的处理。<br>所以它的结构应该大致如下。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> warning = <span class="function"><span class="params">message</span> =&gt;</span> &#123;</div><div class="line">    <span class="comment">// do something</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">console</span> !== <span class="string">'undefined'</span> &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">console</span>.error === <span class="string">'function'</span>) &#123;</div><div class="line">        <span class="built_in">console</span>.error(message)</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3 id="源码及对比分析-1"><a href="#源码及对比分析-1" class="headerlink" title="源码及对比分析"></a>源码及对比分析</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Prints a warning in the console if it exists.</div><div class="line"> *</div><div class="line"> * @param &#123;String&#125; message The warning message.</div><div class="line"> * @returns &#123;void&#125;</div><div class="line"> */</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">warning</span>(<span class="params">message</span>) </span>&#123;</div><div class="line">  <span class="comment">/* eslint-disable no-console */</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">console</span> !== <span class="string">'undefined'</span> &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">console</span>.error === <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="built_in">console</span>.error(message)</div><div class="line">  &#125;</div><div class="line">  <span class="comment">/* eslint-enable no-console */</span></div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    <span class="comment">// This error was thrown as a convenience so that if you enable</span></div><div class="line">    <span class="comment">// "break on all exceptions" in your console,</span></div><div class="line">    <span class="comment">// it would pause the execution at this line.</span></div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(message)</div><div class="line">  <span class="comment">/* eslint-disable no-empty */</span></div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123; &#125;</div><div class="line">  <span class="comment">/* eslint-enable no-empty */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先，为了防止在使用eslint对代码校验过程中禁用console，通过行内注释来启用console，在console.error输出错误信息后，<br>再通过行内注释开启对console的禁用。然后，从注释上我们可以知道，throw new Error(message)来抛出错误是为了能够暂停执行。</p>
+<h2 id="createStore"><a href="#createStore" class="headerlink" title="createStore"></a>createStore</h2><h3 id="个人猜想-2"><a href="#个人猜想-2" class="headerlink" title="个人猜想"></a>个人猜想</h3><p>从官方API文档中可以得知，createStore(reducer, [preloadedState], enhancer)返回一个保存应用所有state的对象。</p>
+<ul>
+<li>reducer (Function): 接收两个参数，分别是当前的 state 树和要处理的 action，返回新的 state 树。</li>
+<li>[preloadedState] (any): 初始时的 state。在同构应用中，你可以决定是否把服务端传来的 state 水合（hydrate）后传给它，或者从之前保存的用户会话中恢复一个传给它。如果你使用 combineReducers 创建 reducer，它必须是一个普通对象，与传入的 keys 保持同样的结构。否则，你可以自由传入任何 reducer 可理解的内容。</li>
+<li>enhancer (Function): Store enhancer 是一个组合 store creator 的高阶函数，返回一个新的强化过的 store creator。这与 middleware 相似，它也允许你通过复合函数改变 store 接口。</li>
+</ul>
+<p>然后返回的对象中有这么几个方法</p>
+<ul>
+<li>getState() 返回应用当前的state树</li>
+<li>dispatch(action) 分发action，用来改变state树</li>
+<li>subscribe(listener) 添加监听器，用来订阅state改变，返回一个unsubscribe函数</li>
+<li>replaceReducer(nextReducer) 替换当前用来计算state的reducer(通过createStore传入的)</li>
+</ul>
+<p>从文档的描述中可以大致猜测出createStore中使用了闭包，并且内部有一个变量专门用来存储当前state。并且对外提供一个getState方法用来获取这个state。这也符合Redux的原则，state是只读的。<br>然后再看dispatch，dispatch用来传递action给reducer，让reducer去改变应用树的状态。那么dispatch方法中必然有currentReducer(currentState, action)这样的调用。<br>同时，createStore中实现了发布-订阅(不了解的可以自己搜下发布-订阅模式)。那么也必然有一个存放监听函数的数组，同时由于订阅的是当前state树的状态是否改变，而state树又只能由dispatch改变。<br>显然，dispatch中还有对state改变事件的发布。接下来是replaceReducer，看上去直接用注入的nextReducer来替换以前的reducer即可。</p>
+<p>基于猜想，得到如下的结构<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> createStore = <span class="function">(<span class="params">reducer, preloadedState, enhancer</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// do type check</span></div><div class="line"></div><div class="line">    <span class="keyword">let</span> currentReducer = reducer;</div><div class="line">    <span class="keyword">let</span> currentState = preloadedState;</div><div class="line">    <span class="keyword">let</span> listeners = [];</div><div class="line"></div><div class="line"></div><div class="line">    <span class="keyword">let</span> getState = <span class="function"><span class="params">()</span> =&gt;</span> currentState;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> dispatch = <span class="function"><span class="params">action</span> =&gt;</span> &#123;</div><div class="line">        <span class="comment">//do check</span></div><div class="line"></div><div class="line">        <span class="comment">//update state</span></div><div class="line">        currentState = currentReducer(currentState, action);</div><div class="line"></div><div class="line">        <span class="comment">//trigger listeners</span></div><div class="line">        listeners.forEach(<span class="function"><span class="params">listener</span> =&gt;</span> listener());</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> subscribe = <span class="function"><span class="params">listener</span> =&gt;</span> &#123;</div><div class="line">        <span class="comment">//do check</span></div><div class="line"></div><div class="line">        listeners.push(listener);</div><div class="line">        <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">            <span class="keyword">const</span> pos = <span class="built_in">Array</span>.findIndex(listener);</div><div class="line">            pos &gt; <span class="number">-1</span> &amp;&amp; listeners.splice(pos, <span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> replaceReducer = <span class="function"><span class="params">nextReducer</span> =&gt;</span> currentReducer = nextReducer;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        getState,</div><div class="line">        dispatch,</div><div class="line">        subscribe,</div><div class="line">        replaceReducer</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> createStore;</div></pre></td></tr></table></figure></p>
+<h3 id="源码及对比分析-2"><a href="#源码及对比分析-2" class="headerlink" title="源码及对比分析"></a>源码及对比分析</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> isPlainObject <span class="keyword">from</span> <span class="string">'lodash/isPlainObject'</span></div><div class="line"><span class="keyword">import</span> $$observable <span class="keyword">from</span> <span class="string">'symbol-observable'</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * These are private action types reserved by Redux.</div><div class="line"> * For any unknown actions, you must return the current state.</div><div class="line"> * If the current state is undefined, you must return the initial state.</div><div class="line"> * Do not reference these action types directly in your code.</div><div class="line"> */</div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> ActionTypes = &#123;</div><div class="line">  <span class="attr">INIT</span>: <span class="string">'@@redux/INIT'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates a Redux store that holds the state tree.</div><div class="line"> * The only way to change the data in the store is to call `dispatch()` on it.</div><div class="line"> *</div><div class="line"> * There should only be a single store in your app. To specify how different</div><div class="line"> * parts of the state tree respond to actions, you may combine several reducers</div><div class="line"> * into a single reducer function by using `combineReducers`.</div><div class="line"> *</div><div class="line"> * @param &#123;Function&#125; reducer A function that returns the next state tree, given</div><div class="line"> * the current state tree and the action to handle.</div><div class="line"> *</div><div class="line"> * @param &#123;any&#125; [preloadedState] The initial state. You may optionally specify it</div><div class="line"> * to hydrate the state from the server in universal apps, or to restore a</div><div class="line"> * previously serialized user session.</div><div class="line"> * If you use `combineReducers` to produce the root reducer function, this must be</div><div class="line"> * an object with the same shape as `combineReducers` keys.</div><div class="line"> *</div><div class="line"> * @param &#123;Function&#125; [enhancer] The store enhancer. You may optionally specify it</div><div class="line"> * to enhance the store with third-party capabilities such as middleware,</div><div class="line"> * time travel, persistence, etc. The only store enhancer that ships with Redux</div><div class="line"> * is `applyMiddleware()`.</div><div class="line"> *</div><div class="line"> * @returns &#123;Store&#125; A Redux store that lets you read the state, dispatch actions</div><div class="line"> * and subscribe to changes.</div><div class="line"> */</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">createStore</span>(<span class="params">reducer, preloadedState, enhancer</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> preloadedState === <span class="string">'function'</span> &amp;&amp; <span class="keyword">typeof</span> enhancer === <span class="string">'undefined'</span>) &#123;</div><div class="line">    enhancer = preloadedState</div><div class="line">    preloadedState = <span class="literal">undefined</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'undefined'</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the enhancer to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> enhancer(createStore)(reducer, preloadedState)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> reducer !== <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the reducer to be a function.'</span>)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">let</span> currentReducer = reducer</div><div class="line">  <span class="keyword">let</span> currentState = preloadedState</div><div class="line">  <span class="keyword">let</span> currentListeners = []</div><div class="line">  <span class="keyword">let</span> nextListeners = currentListeners</div><div class="line">  <span class="keyword">let</span> isDispatching = <span class="literal">false</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">ensureCanMutateNextListeners</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (nextListeners === currentListeners) &#123;</div><div class="line">      nextListeners = currentListeners.slice()</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Reads the state tree managed by the store.</div><div class="line">   *</div><div class="line">   * @returns &#123;any&#125; The current state tree of your application.</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getState</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> currentState</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Adds a change listener. It will be called any time an action is dispatched,</div><div class="line">   * and some part of the state tree may potentially have changed. You may then</div><div class="line">   * call `getState()` to read the current state tree inside the callback.</div><div class="line">   *</div><div class="line">   * You may call `dispatch()` from a change listener, with the following</div><div class="line">   * caveats:</div><div class="line">   *</div><div class="line">   * 1. The subscriptions are snapshotted just before every `dispatch()` call.</div><div class="line">   * If you subscribe or unsubscribe while the listeners are being invoked, this</div><div class="line">   * will not have any effect on the `dispatch()` that is currently in progress.</div><div class="line">   * However, the next `dispatch()` call, whether nested or not, will use a more</div><div class="line">   * recent snapshot of the subscription list.</div><div class="line">   *</div><div class="line">   * 2. The listener should not expect to see all state changes, as the state</div><div class="line">   * might have been updated multiple times during a nested `dispatch()` before</div><div class="line">   * the listener is called. It is, however, guaranteed that all subscribers</div><div class="line">   * registered before the `dispatch()` started will be called with the latest</div><div class="line">   * state by the time it exits.</div><div class="line">   *</div><div class="line">   * @param &#123;Function&#125; listener A callback to be invoked on every dispatch.</div><div class="line">   * @returns &#123;Function&#125; A function to remove this change listener.</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">listener</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> listener !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected listener to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> isSubscribed = <span class="literal">true</span></div><div class="line"></div><div class="line">    ensureCanMutateNextListeners()</div><div class="line">    nextListeners.push(listener)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unsubscribe</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">if</span> (!isSubscribed) &#123;</div><div class="line">        <span class="keyword">return</span></div><div class="line">      &#125;</div><div class="line"></div><div class="line">      isSubscribed = <span class="literal">false</span></div><div class="line"></div><div class="line">      ensureCanMutateNextListeners()</div><div class="line">      <span class="keyword">const</span> index = nextListeners.indexOf(listener)</div><div class="line">      nextListeners.splice(index, <span class="number">1</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Dispatches an action. It is the only way to trigger a state change.</div><div class="line">   *</div><div class="line">   * The `reducer` function, used to create the store, will be called with the</div><div class="line">   * current state tree and the given `action`. Its return value will</div><div class="line">   * be considered the **next** state of the tree, and the change listeners</div><div class="line">   * will be notified.</div><div class="line">   *</div><div class="line">   * The base implementation only supports plain object actions. If you want to</div><div class="line">   * dispatch a Promise, an Observable, a thunk, or something else, you need to</div><div class="line">   * wrap your store creating function into the corresponding middleware. For</div><div class="line">   * example, see the documentation for the `redux-thunk` package. Even the</div><div class="line">   * middleware will eventually dispatch plain object actions using this method.</div><div class="line">   *</div><div class="line">   * @param &#123;Object&#125; action A plain object representing “what changed”. It is</div><div class="line">   * a good idea to keep actions serializable so you can record and replay user</div><div class="line">   * sessions, or use the time travelling `redux-devtools`. An action must have</div><div class="line">   * a `type` property which may not be `undefined`. It is a good idea to use</div><div class="line">   * string constants for action types.</div><div class="line">   *</div><div class="line">   * @returns &#123;Object&#125; For convenience, the same action object you dispatched.</div><div class="line">   *</div><div class="line">   * Note that, if you use a custom middleware, it may wrap `dispatch()` to</div><div class="line">   * return something else (for example, a Promise you can await).</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">action</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isPlainObject(action)) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">        <span class="string">'Actions must be plain objects. '</span> +</div><div class="line">        <span class="string">'Use custom middleware for async actions.'</span></div><div class="line">      )</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> action.type === <span class="string">'undefined'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">        <span class="string">'Actions may not have an undefined "type" property. '</span> +</div><div class="line">        <span class="string">'Have you misspelled a constant?'</span></div><div class="line">      )</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (isDispatching) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Reducers may not dispatch actions.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      isDispatching = <span class="literal">true</span></div><div class="line">      currentState = currentReducer(currentState, action)</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      isDispatching = <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">const</span> listeners = currentListeners = nextListeners</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; listeners.length; i++) &#123;</div><div class="line">      <span class="keyword">const</span> listener = listeners[i]</div><div class="line">      listener()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> action</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Replaces the reducer currently used by the store to calculate the state.</div><div class="line">   *</div><div class="line">   * You might need this if your app implements code splitting and you want to</div><div class="line">   * load some of the reducers dynamically. You might also need this if you</div><div class="line">   * implement a hot reloading mechanism for Redux.</div><div class="line">   *</div><div class="line">   * @param &#123;Function&#125; nextReducer The reducer for the store to use instead.</div><div class="line">   * @returns &#123;void&#125;</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">replaceReducer</span>(<span class="params">nextReducer</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> nextReducer !== <span class="string">'function'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the nextReducer to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    currentReducer = nextReducer</div><div class="line">    dispatch(&#123; <span class="attr">type</span>: ActionTypes.INIT &#125;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Interoperability point for observable/reactive libraries.</div><div class="line">   * @returns &#123;observable&#125; A minimal observable of state changes.</div><div class="line">   * For more information, see the observable proposal:</div><div class="line">   * https://github.com/tc39/proposal-observable</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">observable</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">const</span> outerSubscribe = subscribe</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      <span class="comment">/**</span></div><div class="line">       * The minimal observable subscription method.</div><div class="line">       * @param &#123;Object&#125; observer Any object that can be used as an observer.</div><div class="line">       * The observer object should have a `next` method.</div><div class="line">       * @returns &#123;subscription&#125; An object with an `unsubscribe` method that can</div><div class="line">       * be used to unsubscribe the observable from the store, and prevent further</div><div class="line">       * emission of values from the observable.</div><div class="line">       */</div><div class="line">      subscribe(observer) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> observer !== <span class="string">'object'</span>) &#123;</div><div class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Expected the observer to be an object.'</span>)</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">observeState</span>(<span class="params"></span>) </span>&#123;</div><div class="line">          <span class="keyword">if</span> (observer.next) &#123;</div><div class="line">            observer.next(getState())</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        observeState()</div><div class="line">        <span class="keyword">const</span> unsubscribe = outerSubscribe(observeState)</div><div class="line">        <span class="keyword">return</span> &#123; unsubscribe &#125;</div><div class="line">      &#125;,</div><div class="line"></div><div class="line">      [$$observable]() &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// When a store is created, an "INIT" action is dispatched so that every</span></div><div class="line">  <span class="comment">// reducer returns their initial state. This effectively populates</span></div><div class="line">  <span class="comment">// the initial state tree.</span></div><div class="line">  dispatch(&#123; <span class="attr">type</span>: ActionTypes.INIT &#125;)</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    dispatch,</div><div class="line">    subscribe,</div><div class="line">    getState,</div><div class="line">    replaceReducer,</div><div class="line">    [$$observable]: observable</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在逐步分析源码，然后和原来的猜想进行对比。<br>首先是原猜想中//do type check部分。和预料的一样，进行类型判断检查，由于preloadedState和enhancer都是可省略参数，所以要进行类型判断，<br>当没有传入参数enhancer，并且preloadedState的值又是一个函数的话，createStore会认为你省略了preloadedState，因此第二个参数就是enhancer。<br>再接下来判断enhancer，如果你传入了enhancer但是却又不是函数类型。会抛出错误。如果传入的reducer也不是函数，抛出相关错误。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> preloadedState === <span class="string">'function'</span> &amp;&amp; <span class="keyword">typeof</span> enhancer === <span class="string">'undefined'</span>) &#123;</div><div class="line">    enhancer = preloadedState</div><div class="line">    preloadedState = <span class="literal">undefined</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'undefined'</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> enhancer !== <span class="string">'function'</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the enhancer to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> enhancer(createStore)(reducer, preloadedState)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> reducer !== <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the reducer to be a function.'</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而后接下来是对变量的声明以及初始化<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> currentReducer = reducer</div><div class="line"><span class="keyword">let</span> currentState = preloadedState</div><div class="line"><span class="keyword">let</span> currentListeners = []</div><div class="line"><span class="keyword">let</span> nextListeners = currentListeners</div><div class="line"><span class="keyword">let</span> isDispatching = <span class="literal">false</span></div></pre></td></tr></table></figure></p>
+<p>和猜想的对比，发现多了两个变量，nextListeners和isDispatching。和原来一样，先猜想下这两个变量的用途。<br>从名字上可以看出isDispatching应该是用在dispatch方法中作为一个标识，来确保在上一个dispatch方法执行结束前，下一个dispatch不会被执行。<br>至于nextListeners暂时还看不出来。接着看下面的代码。</p>
+<p>getState，不需要再解释了<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getState</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> currentState</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>dispatch<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">action</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isPlainObject(action)) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">            <span class="string">'Actions must be plain objects. '</span> +</div><div class="line">            <span class="string">'Use custom middleware for async actions.'</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> action.type === <span class="string">'undefined'</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">            <span class="string">'Actions may not have an undefined "type" property. '</span> +</div><div class="line">            <span class="string">'Have you misspelled a constant?'</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (isDispatching) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Reducers may not dispatch actions.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        isDispatching = <span class="literal">true</span></div><div class="line">        currentState = currentReducer(currentState, action)</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        isDispatching = <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">const</span> listeners = currentListeners = nextListeners</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; listeners.length; i++) &#123;</div><div class="line">        <span class="keyword">const</span> listener = listeners[i]</div><div class="line">        listener()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> action</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>和开始的猜想基本一致，首先检查传入的action是不是纯对象，如果不是则抛出异常。然后检测，action中是否存在type，不存在也给出相应的错误提示。<br>不过这里多了isDispatching标识符，主要是为了确保一次dispatch用来避免reducer中可能会出现的调用dispatch而造成死循环的情况。但是listener也有调用dispatch的可能，不知道为什么没有<br>把触发监听操作也放入到try 中。</p>
+<p>subscribe<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">listener</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> listener !== <span class="string">'function'</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected listener to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> isSubscribed = <span class="literal">true</span></div><div class="line"></div><div class="line">    ensureCanMutateNextListeners()</div><div class="line">    nextListeners.push(listener)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unsubscribe</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (!isSubscribed) &#123;</div><div class="line">            <span class="keyword">return</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        isSubscribed = <span class="literal">false</span></div><div class="line"></div><div class="line">        ensureCanMutateNextListeners()</div><div class="line">        <span class="keyword">const</span> index = nextListeners.indexOf(listener)</div><div class="line">        nextListeners.splice(index, <span class="number">1</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ensureCanMutateNextListeners</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (nextListeners === currentListeners) &#123;</div><div class="line">        nextListeners = currentListeners.slice()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>开始依旧是类型检测判断，在这里又声明了一个标识符用来确保unsubscribe只有在第一次调用时才有用。当然，通过index是否大于-1来确保不会移除其他listener其实也没问题。<br>在这里，可以看出使用nextListener的意图了。只要是在listeners调用期间产生的subscribe和unsubscribe都不会在本次调用中生效，而是会放入到nextListeners中在下一次的listeners调用中生效。<br>这也是为什么需要ensureCanMutateNextListeners的原因，最后在每一次调用dispatch的时候都会<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> listeners = currentListeners = nextListeners</div></pre></td></tr></table></figure></p>
+<p>来同步currentListeners和nextListeners。<br>比较原来构想中的实现<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">listeners.forEach(<span class="function"><span class="params">listener</span> =&gt;</span> listener());</div></pre></td></tr></table></figure></p>
+<p>在原来构想的实现中虽然调用listeners期间产生的subscribe不会在本次调用中生效，但是unsubscribe却是生效了。</p>
+<p>replaceReducer<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">replaceReducer</span>(<span class="params">nextReducer</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> nextReducer !== <span class="string">'function'</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected the nextReducer to be a function.'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    currentReducer = nextReducer</div><div class="line">    dispatch(&#123; <span class="attr">type</span>: ActionTypes.INIT &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对比分析不难发现，和预料的一样用传入的reducer来替换之前的reducer。并且在替换前做类型检查。但是这里面多了一个dispatch({ type: ActionTypes.INIT })。<br>那它是做什么用的呢？还是先猜测一下。在Redux中，要求使用者在编写reducer时，对于未处理action直接返回旧的state。那么显然</p>
+<h2 id="combineReducer"><a href="#combineReducer" class="headerlink" title="combineReducer"></a>combineReducer</h2><h3 id="个人猜想-3"><a href="#个人猜想-3" class="headerlink" title="个人猜想"></a>个人猜想</h3><p>从官方API文档中可知，combineReducers(reducers)返回一个调用reducers对象里所有reducer的reducer，并且构造一个与reducers对象结构相同的state对象。</p>
+<ul>
+<li>reducers (Object): 一个对象，它的值（value） 对应不同的 reducer 函数，这些 reducer 函数后面会被合并成一个。</li>
+</ul>
+<p>简单的说，combineReducers的主要作用就是将一个个小的reducer拼装成一个大的reducer用来处理相同结构的state对象。<br>基于猜想，得到如下结构<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> combineReducers = <span class="function"><span class="params">reducers</span> =&gt;</span> &#123;</div><div class="line">    <span class="comment">// do check</span></div><div class="line"></div><div class="line">    <span class="keyword">const</span> keys = <span class="built_in">Object</span>.keys(reducers);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">state, action</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">const</span> nextState = &#123;&#125;;</div><div class="line">        <span class="keyword">let</span> hasChanged = <span class="literal">false</span>;</div><div class="line"></div><div class="line">        keys.forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</div><div class="line">            nextState[key] = reducers[key](state[key], action);</div><div class="line">            hasChanged = hasChanged || nextState[key] === state[key];</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> hasChanged ? nextState : state;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3 id="源码及分析"><a href="#源码及分析" class="headerlink" title="源码及分析"></a>源码及分析</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">combineReducers</span>(<span class="params">reducers</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> reducerKeys = <span class="built_in">Object</span>.keys(reducers)</div><div class="line">  <span class="keyword">const</span> finalReducers = &#123;&#125;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; reducerKeys.length; i++) &#123;</div><div class="line">    <span class="keyword">const</span> key = reducerKeys[i]</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> reducers[key] === <span class="string">'undefined'</span>) &#123;</div><div class="line">        warning(<span class="string">`No reducer provided for key "<span class="subst">$&#123;key&#125;</span>"`</span>)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> reducers[key] === <span class="string">'function'</span>) &#123;</div><div class="line">      finalReducers[key] = reducers[key]</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> finalReducerKeys = <span class="built_in">Object</span>.keys(finalReducers)</div><div class="line"></div><div class="line">  <span class="keyword">let</span> unexpectedKeyCache</div><div class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">    unexpectedKeyCache = &#123;&#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">let</span> shapeAssertionError</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    assertReducerShape(finalReducers)</div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">    shapeAssertionError = e</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">combination</span>(<span class="params">state = &#123;&#125;, action</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (shapeAssertionError) &#123;</div><div class="line">      <span class="keyword">throw</span> shapeAssertionError</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">      <span class="keyword">const</span> warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache)</div><div class="line">      <span class="keyword">if</span> (warningMessage) &#123;</div><div class="line">        warning(warningMessage)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> hasChanged = <span class="literal">false</span></div><div class="line">    <span class="keyword">const</span> nextState = &#123;&#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; finalReducerKeys.length; i++) &#123;</div><div class="line">      <span class="keyword">const</span> key = finalReducerKeys[i]</div><div class="line">      <span class="keyword">const</span> reducer = finalReducers[key]</div><div class="line">      <span class="keyword">const</span> previousStateForKey = state[key]</div><div class="line">      <span class="keyword">const</span> nextStateForKey = reducer(previousStateForKey, action)</div><div class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> nextStateForKey === <span class="string">'undefined'</span>) &#123;</div><div class="line">        <span class="keyword">const</span> errorMessage = getUndefinedStateErrorMessage(key, action)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(errorMessage)</div><div class="line">      &#125;</div><div class="line">      nextState[key] = nextStateForKey</div><div class="line">      hasChanged = hasChanged || nextStateForKey !== previousStateForKey</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hasChanged ? nextState : state</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>和猜想的结构基本一致，这里的检查首先是声明一个finalReducers用来存储reducers中属性值为函数的属性。然后声明变量unexpectedKeyCache,如果在非生产环境，会将其初始化为{}。然后执行assertReducerShape(finalReducers)，如果抛出异常会将错误信息存储在shapeAssertionError。<br>接下来看shapeAssertionError的用途<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">assertReducerShape</span>(<span class="params">reducers</span>) </span>&#123;</div><div class="line">  <span class="built_in">Object</span>.keys(reducers).forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">const</span> reducer = reducers[key]</div><div class="line">    <span class="keyword">const</span> initialState = reducer(<span class="literal">undefined</span>, &#123; <span class="attr">type</span>: ActionTypes.INIT &#125;)</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> initialState === <span class="string">'undefined'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">        <span class="string">`Reducer "<span class="subst">$&#123;key&#125;</span>" returned undefined during initialization. `</span> +</div><div class="line">        <span class="string">`If the state passed to the reducer is undefined, you must `</span> +</div><div class="line">        <span class="string">`explicitly return the initial state. The initial state may `</span> +</div><div class="line">        <span class="string">`not be undefined. If you don't want to set a value for this reducer, `</span> +</div><div class="line">        <span class="string">`you can use null instead of undefined.`</span></div><div class="line">      )</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">const</span> type = <span class="string">'@@redux/PROBE_UNKNOWN_ACTION_'</span> + <span class="built_in">Math</span>.random().toString(<span class="number">36</span>).substring(<span class="number">7</span>).split(<span class="string">''</span>).join(<span class="string">'.'</span>)</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> reducer(<span class="literal">undefined</span>, &#123; type &#125;) === <span class="string">'undefined'</span>) &#123;</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">        <span class="string">`Reducer "<span class="subst">$&#123;key&#125;</span>" returned undefined when probed with a random type. `</span> +</div><div class="line">        <span class="string">`Don't try to handle <span class="subst">$&#123;ActionTypes.INIT&#125;</span> or other actions in "redux/*" `</span> +</div><div class="line">        <span class="string">`namespace. They are considered private. Instead, you must return the `</span> +</div><div class="line">        <span class="string">`current state for any unknown actions, unless it is undefined, `</span> +</div><div class="line">        <span class="string">`in which case you must return the initial state, regardless of the `</span> +</div><div class="line">        <span class="string">`action type. The initial state may not be undefined, but can be null.`</span></div><div class="line">      )</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看出assertReducerShape的主要作用就是判断reducers中的每一个reducer在action为{ type: ActionTypes.INIT }<br>时是否有初始值，如果没有则会抛出异常。同时生成一个随机的action，判断是否有返回值。因为在Redux中，要求reducer在遇到未知<br>action时返回旧的state。而且给出的错误提示里面也清晰的提到了这点，告诉使用者不要处理Redux中的私有action，并且对于未知的action应当<br>返回当前的state。且初始值不能是undefined，但是可以是null。<br>接下来是返回的combineReducers函数。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">combination</span>(<span class="params">state = &#123;&#125;, action</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (shapeAssertionError) &#123;</div><div class="line">        <span class="keyword">throw</span> shapeAssertionError</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span>) &#123;</div><div class="line">        <span class="keyword">const</span> warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache)</div><div class="line">        <span class="keyword">if</span> (warningMessage) &#123;</div><div class="line">            warning(warningMessage)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">let</span> hasChanged = <span class="literal">false</span></div><div class="line">    <span class="keyword">const</span> nextState = &#123;&#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; finalReducerKeys.length; i++) &#123;</div><div class="line">        <span class="keyword">const</span> key = finalReducerKeys[i]</div><div class="line">        <span class="keyword">const</span> reducer = finalReducers[key]</div><div class="line">        <span class="keyword">const</span> previousStateForKey = state[key]</div><div class="line">        <span class="keyword">const</span> nextStateForKey = reducer(previousStateForKey, action)</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> nextStateForKey === <span class="string">'undefined'</span>) &#123;</div><div class="line">            <span class="keyword">const</span> errorMessage = getUndefinedStateErrorMessage(key, action)</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(errorMessage)</div><div class="line">        &#125;</div><div class="line">        nextState[key] = nextStateForKey</div><div class="line">        hasChanged = hasChanged || nextStateForKey !== previousStateForKey</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hasChanged ? nextState : state</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先对shapeAssertionError中可能存在的异常进行抛出，接着，如果是在非生产环境中，会执行getUnexpectedStateShapeWarningMessage，<br>并且在出现错误信息时，将错误信息在控制台打印出来。<br>看看getUnexpectedStateShapeWarningMessage的主要用途。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getUnexpectedStateShapeWarningMessage</span>(<span class="params">inputState, reducers, action, unexpectedKeyCache</span>) </span>&#123;</div><div class="line">    <span class="keyword">const</span> reducerKeys = <span class="built_in">Object</span>.keys(reducers)</div><div class="line">    <span class="keyword">const</span> argumentName = action &amp;&amp; action.type === ActionTypes.INIT ?</div><div class="line">        <span class="string">'preloadedState argument passed to createStore'</span> :</div><div class="line">        <span class="string">'previous state received by the reducer'</span></div><div class="line"></div><div class="line">    <span class="keyword">if</span> (reducerKeys.length === <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="string">'Store does not have a valid reducer. Make sure the argument passed '</span> +</div><div class="line">            <span class="string">'to combineReducers is an object whose values are reducers.'</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!isPlainObject(inputState)) &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="string">`The <span class="subst">$&#123;argumentName&#125;</span> has unexpected type of "`</span> +</div><div class="line">            (&#123;&#125;).toString.call(inputState).match(<span class="regexp">/\s([a-z|A-Z]+)/</span>)[<span class="number">1</span>] +</div><div class="line">            <span class="string">`". Expected argument to be an object with the following `</span> +</div><div class="line">            <span class="string">`keys: "<span class="subst">$&#123;reducerKeys.join(<span class="string">'", "'</span>)&#125;</span>"`</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">const</span> unexpectedKeys = <span class="built_in">Object</span>.keys(inputState).filter(<span class="function"><span class="params">key</span> =&gt;</span></div><div class="line">        !reducers.hasOwnProperty(key) &amp;&amp;</div><div class="line">        !unexpectedKeyCache[key]</div><div class="line">    )</div><div class="line"></div><div class="line">    unexpectedKeys.forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</div><div class="line">        unexpectedKeyCache[key] = <span class="literal">true</span></div><div class="line">    &#125;)</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (unexpectedKeys.length &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> (</div><div class="line">            <span class="string">`Unexpected <span class="subst">$&#123;unexpectedKeys.length &gt; <span class="number">1</span> ? <span class="string">'keys'</span> : <span class="string">'key'</span>&#125;</span> `</span> +</div><div class="line">            <span class="string">`"<span class="subst">$&#123;unexpectedKeys.join(<span class="string">'", "'</span>)&#125;</span>" found in <span class="subst">$&#123;argumentName&#125;</span>. `</span> +</div><div class="line">            <span class="string">`Expected to find one of the known reducer keys instead: `</span> +</div><div class="line">            <span class="string">`"<span class="subst">$&#123;reducerKeys.join(<span class="string">'", "'</span>)&#125;</span>". Unexpected keys will be ignored.`</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从代码上看，主要处理了3个异常情况，并生成对应的错误信息返回。</p>
+<ol>
+<li>reducers中没有reducer</li>
+<li>state不是可解释的Object对象</li>
+<li>state中存在没有reducer处理的属性，但只会在第一次提醒，之后会忽略。</li>
+</ol>
+<p>在接下来则是combineReducers的核心代码，也是最初在猜想时列出来的代码。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> hasChanged = <span class="literal">false</span></div><div class="line"><span class="keyword">const</span> nextState = &#123;&#125;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; finalReducerKeys.length; i++) &#123;</div><div class="line">    <span class="keyword">const</span> key = finalReducerKeys[i]</div><div class="line">    <span class="keyword">const</span> reducer = finalReducers[key]</div><div class="line">    <span class="keyword">const</span> previousStateForKey = state[key]</div><div class="line">    <span class="keyword">const</span> nextStateForKey = reducer(previousStateForKey, action)</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> nextStateForKey === <span class="string">'undefined'</span>) &#123;</div><div class="line">        <span class="keyword">const</span> errorMessage = getUndefinedStateErrorMessage(key, action)</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(errorMessage)</div><div class="line">    &#125;</div><div class="line">    nextState[key] = nextStateForKey</div><div class="line">    hasChanged = hasChanged || nextStateForKey !== previousStateForKey</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> hasChanged ? nextState : state</div></pre></td></tr></table></figure></p>
+<p>对比发现，除却对nextStateForKey进行校验外，实现和预期的一致。<br>使用变量nextState存储本次执行reducer返回的state。hasChanged用来记录前后state是否发生改变。遍历reducers，将对应的state的部分交给相关的reducer处理，最后根据hasChanged是否改变来决定返回nextState还是state。</p>
+<h2 id="bindActionCreators"><a href="#bindActionCreators" class="headerlink" title="bindActionCreators"></a>bindActionCreators</h2><h3 id="个人猜想-4"><a href="#个人猜想-4" class="headerlink" title="个人猜想"></a>个人猜想</h3><p>从官方API文档可知，bindActionCreators(actionCreators, dispatch)把action creators 转成拥有同名keys的对象，但使用dispatch把每个action creator包围起来，这样可以直接调用它们。<br>简单地说，原先需要store.dispatch(actionCreators.addTodo(text))，经过函数处理后只需要obj.addTodo(text)即可，obj是函数的返回值。<br>不过如果actionCreators是一个函数时，返回的是一个函数，这时actionCreators作为一个actionCreator存在。</p>
+<p>基于猜想得到下面的结构<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> bindActionCreator = <span class="function">(<span class="params">actionCreator, dispatch</span>) =&gt;</span> (...args) =&gt; dispatch(actionCreator(...args));</div><div class="line"></div><div class="line"><span class="keyword">const</span> bindActionCreators = <span class="function">(<span class="params">actionCreators, dispatch</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> actionCreators === <span class="string">'function'</span>) &#123;</div><div class="line">        <span class="keyword">return</span> bindActionCreator(actionCreators, dispatch);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// check actionCreators === object, throw error</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> actionCreators.reduce(<span class="function">(<span class="params">result, key</span>) =&gt;</span> &#123;</div><div class="line">        <span class="comment">// check type</span></div><div class="line">        result[key] = bindActionCreator(actionCreators[key], dispatch);</div><div class="line">    &#125;, &#123;&#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3 id="源码及分析-1"><a href="#源码及分析-1" class="headerlink" title="源码及分析"></a>源码及分析</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> warning <span class="keyword">from</span> <span class="string">'./utils/warning'</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindActionCreator</span>(<span class="params">actionCreator, dispatch</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>) =&gt;</span> dispatch(actionCreator(...args))</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Turns an object whose values are action creators, into an object with the</div><div class="line"> * same keys, but with every function wrapped into a `dispatch` call so they</div><div class="line"> * may be invoked directly. This is just a convenience method, as you can call</div><div class="line"> * `store.dispatch(MyActionCreators.doSomething())` yourself just fine.</div><div class="line"> *</div><div class="line"> * For convenience, you can also pass a single function as the first argument,</div><div class="line"> * and get a function in return.</div><div class="line"> *</div><div class="line"> * @param &#123;Function|Object&#125; actionCreators An object whose values are action</div><div class="line"> * creator functions. One handy way to obtain it is to use ES6 `import * as`</div><div class="line"> * syntax. You may also pass a single function.</div><div class="line"> *</div><div class="line"> * @param &#123;Function&#125; dispatch The `dispatch` function available on your Redux</div><div class="line"> * store.</div><div class="line"> *</div><div class="line"> * @returns &#123;Function|Object&#125; The object mimicking the original object, but with</div><div class="line"> * every action creator wrapped into the `dispatch` call. If you passed a</div><div class="line"> * function as `actionCreators`, the return value will also be a single</div><div class="line"> * function.</div><div class="line"> */</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">bindActionCreators</span>(<span class="params">actionCreators, dispatch</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> actionCreators === <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">return</span> bindActionCreator(actionCreators, dispatch)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> actionCreators !== <span class="string">'object'</span> || actionCreators === <span class="literal">null</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</div><div class="line">      <span class="string">`bindActionCreators expected an object or a function, instead received <span class="subst">$&#123;actionCreators === <span class="literal">null</span> ? <span class="string">'null'</span> : <span class="keyword">typeof</span> actionCreators&#125;</span>. `</span> +</div><div class="line">      <span class="string">`Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?`</span></div><div class="line">    )</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">const</span> keys = <span class="built_in">Object</span>.keys(actionCreators)</div><div class="line">  <span class="keyword">const</span> boundActionCreators = &#123;&#125;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; keys.length; i++) &#123;</div><div class="line">    <span class="keyword">const</span> key = keys[i]</div><div class="line">    <span class="keyword">const</span> actionCreator = actionCreators[key]</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> actionCreator === <span class="string">'function'</span>) &#123;</div><div class="line">      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      warning(<span class="string">`bindActionCreators expected a function actionCreator for key '<span class="subst">$&#123;key&#125;</span>', instead received type '<span class="subst">$&#123;<span class="keyword">typeof</span> actionCreator&#125;</span>'.`</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> boundActionCreators</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>和预期结果一致，这个函数比较简单，先对传入的actionCreators进行类型判断，然后是函数调用bindActionCreator。而bindActionCreator其实就是个高阶函数，负责封装dispatch操作。<br>然后再判断actionCreators是否是预期的object，不是则抛出错误。然后遍历actionCreators生成一个拥有同名keys的对象。</p>
+<h2 id="applyMiddleware"><a href="#applyMiddleware" class="headerlink" title="applyMiddleware"></a>applyMiddleware</h2><h3 id="个人猜想-5"><a href="#个人猜想-5" class="headerlink" title="个人猜想"></a>个人猜想</h3><p>在Redux这里，中间件处于action与reducer之间，它提供的是位于 action 被发起之后，到达 reducer 之前的扩展点。放张图<br><img src="/blog/img/blog6-3.png" alt="middleware"><br>从图里可以清晰的看出Redux里面的中间件起了什么作用。在action被发起后，会依次被中间件处理，然后才会到达dispatch，最后传递到reducer中进行处理。</p>
+<p>从官方文档可以得知，applyMiddleware(…middlewares)返回了(Function) 一个应用了 middleware 后的 store enhancer。这个 store enhancer 的签名是 createStore =&gt; createStore，但是最简单的使用方法就是直接作为最后一个 enhancer 参数传递给 createStore() 函数。<br>这意味着applyMiddleware是一个三阶函数，…middlewrares =&gt; createStore =&gt; (reducers, initialState) ，而文档中关于其参数的介绍：</p>
+<ul>
+<li>…middlewares (arguments): 遵循 Redux middleware API 的函数。每个 middleware 接受 Store 的 dispatch 和 getState 函数作为命名参数，并返回一个函数。<br>该函数会被传入 被称为 next 的下一个 middleware 的 dispatch 方法，并返回一个接收 action 的新函数，这个函数可以直接调用 next(action)，或者在其他需要的时刻调用，甚至根本不去调用它。调用链中最后一个 middleware 会接受真实的 store 的 dispatch 方法作为 next 参数，并借此结束调用链。所以，middleware 的函数签名是 ({ getState, dispatch }) =&gt; next =&gt; action。</li>
+</ul>
+<p>基于文档和中间件的理解，可以得到下面的结构</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> applyMiddleware = <span class="function">(<span class="params">...middlewares</span>) =&gt;</span> createStore =&gt; <span class="function">(<span class="params">reducers, initialState</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">const</span> store = createStore(reducers, initialState);</div><div class="line">    <span class="keyword">let</span> &#123; getState, dispatch &#125; = store;</div><div class="line"></div><div class="line">    <span class="keyword">const</span> middlewareAPI = &#123;</div><div class="line">        getState,</div><div class="line">        <span class="attr">dispatch</span>: <span class="function">(<span class="params">action</span>) =&gt;</span> dispatch(action)</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">const</span> chain = middlewares.map(<span class="function"><span class="params">middleware</span> =&gt;</span> middleware(middlewareAPI));</div><div class="line">    dispatch = <span class="comment">// 合并中间件调用链chain和dispatch，并返回一个函数</span></div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">        ...store,</div><div class="line">        dispatch</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="源码及对比分析-3"><a href="#源码及对比分析-3" class="headerlink" title="源码及对比分析"></a>源码及对比分析</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> compose <span class="keyword">from</span> <span class="string">'./compose'</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Creates a store enhancer that applies middleware to the dispatch method</div><div class="line"> * of the Redux store. This is handy for a variety of tasks, such as expressing</div><div class="line"> * asynchronous actions in a concise manner, or logging every action payload.</div><div class="line"> *</div><div class="line"> * See `redux-thunk` package as an example of the Redux middleware.</div><div class="line"> *</div><div class="line"> * Because middleware is potentially asynchronous, this should be the first</div><div class="line"> * store enhancer in the composition chain.</div><div class="line"> *</div><div class="line"> * Note that each middleware will be given the `dispatch` and `getState` functions</div><div class="line"> * as named arguments.</div><div class="line"> *</div><div class="line"> * @param &#123;...Function&#125; middlewares The middleware chain to be applied.</div><div class="line"> * @returns &#123;Function&#125; A store enhancer applying the middleware.</div><div class="line"> */</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">applyMiddleware</span>(<span class="params">...middlewares</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">createStore</span>) =&gt;</span> (reducer, preloadedState, enhancer) =&gt; &#123;</div><div class="line">    <span class="keyword">const</span> store = createStore(reducer, preloadedState, enhancer)</div><div class="line">    <span class="keyword">let</span> dispatch = store.dispatch</div><div class="line">    <span class="keyword">let</span> chain = []</div><div class="line"></div><div class="line">    <span class="keyword">const</span> middlewareAPI = &#123;</div><div class="line">      <span class="attr">getState</span>: store.getState,</div><div class="line">      <span class="attr">dispatch</span>: <span class="function">(<span class="params">action</span>) =&gt;</span> dispatch(action)</div><div class="line">    &#125;</div><div class="line">    chain = middlewares.map(<span class="function"><span class="params">middleware</span> =&gt;</span> middleware(middlewareAPI))</div><div class="line">    dispatch = compose(...chain)(store.dispatch)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      ...store,</div><div class="line">      dispatch</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="compose"><a href="#compose" class="headerlink" title="compose"></a>compose</h2><h3 id="个人猜想-6"><a href="#个人猜想-6" class="headerlink" title="个人猜想"></a>个人猜想</h3><p>从官方API文档可知，compost用来从右到左来组合多个函数。并返回一个从右到左把接收到的函数合成后的最终函数。<br>而其参数介绍</p>
+<ol>
+<li>(arguments): 需要合成的多个函数。预计每个函数都接收一个参数。它的返回值将作为一个参数提供给它左边的函数，以此类推。例外是最右边的参数可以接受多个参数，因为它将为由此产生的函数提供签名。</li>
+</ol>
+<p>也就是说compose(a, b, c)得到的将会是a(b(c()))，利用数组的reduce方法可以很容易的实现。<br>可以得出compost应该如下结构<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> compose = <span class="function">(<span class="params">...funcs</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// check</span></div><div class="line"></div><div class="line">    <span class="comment">//返回一个用来接收dispatch等参数的函数，并且dispatch处于最内圈的调用中</span></div><div class="line">    <span class="keyword">return</span> funcs.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> (...args) =&gt; a(b(...args)));</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3 id="源码及对比分析-4"><a href="#源码及对比分析-4" class="headerlink" title="源码及对比分析"></a>源码及对比分析</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Composes single-argument functions from right to left. The rightmost</div><div class="line"> * function can take multiple arguments as it provides the signature for</div><div class="line"> * the resulting composite function.</div><div class="line"> *</div><div class="line"> * @param &#123;...Function&#125; funcs The functions to compose.</div><div class="line"> * @returns &#123;Function&#125; A function obtained by composing the argument functions</div><div class="line"> * from right to left. For example, compose(f, g, h) is identical to doing</div><div class="line"> * (...args) =&gt; f(g(h(...args))).</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">...funcs</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (funcs.length === <span class="number">0</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="params">arg</span> =&gt;</span> arg</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (funcs.length === <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">return</span> funcs[<span class="number">0</span>]</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> funcs.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> (...args) =&gt; a(b(...args)))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>和预期一致，但同时多了对中间件数量的检测。当没有中间件时，返回原参数(在Redux中将返回原dispatch到store)。当中间件数量只有一个时，返回该中间件。整个函数其实就是下图的一个实现<br><img src="/blog/img/blog6-3.png" alt="middleware"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实Redux源码并不多，而且代码中</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/js/" rel="tag"># js</a>
+          
+            <a href="/blog/tags/React/" rel="tag"># React</a>
+          
+            <a href="/blog/tags/Redux/" rel="tag"># Redux</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2017/05/25/swiper/" rel="next" title="一个轮播小组件">
+                <i class="fa fa-chevron-left"></i> 一个轮播小组件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/blog/images/avatar.gif"
+               alt="wzh1002" />
+          <p class="site-author-name" itemprop="name">wzh1002</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/blog/archives">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/blog/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/blog/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wzh1002" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=427016671&auto=0&height=66"></iframe>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构分析"><span class="nav-number">1.</span> <span class="nav-text">结构分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#index"><span class="nav-number">2.</span> <span class="nav-text">index</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人猜想"><span class="nav-number">2.1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码及对比分析"><span class="nav-number">2.2.</span> <span class="nav-text">源码及对比分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#utils-warning"><span class="nav-number">3.</span> <span class="nav-text">utils/warning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人猜想-1"><span class="nav-number">3.1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码及对比分析-1"><span class="nav-number">3.2.</span> <span class="nav-text">源码及对比分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#createStore"><span class="nav-number">4.</span> <span class="nav-text">createStore</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人猜想-2"><span class="nav-number">4.1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码及对比分析-2"><span class="nav-number">4.2.</span> <span class="nav-text">源码及对比分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#combineReducer"><span class="nav-number">5.</span> <span class="nav-text">combineReducer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人猜想-3"><span class="nav-number">5.1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码及分析"><span class="nav-number">5.2.</span> <span class="nav-text">源码及分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bindActionCreators"><span class="nav-number">6.</span> <span class="nav-text">bindActionCreators</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人猜想-4"><span class="nav-number">6.1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码及分析-1"><span class="nav-number">6.2.</span> <span class="nav-text">源码及分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#applyMiddleware"><span class="nav-number">7.</span> <span class="nav-text">applyMiddleware</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人猜想-5"><span class="nav-number">7.1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码及对比分析-3"><span class="nav-number">7.2.</span> <span class="nav-text">源码及对比分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compose"><span class="nav-number">8.</span> <span class="nav-text">compose</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个人猜想-6"><span class="nav-number">8.1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码及对比分析-4"><span class="nav-number">8.2.</span> <span class="nav-text">源码及对比分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wzh1002</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/blog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "0406145768cd4312a09c13bf1b787796",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("1TrgzAc91JBlrtsQ5WiCGSMM-gzGzoHsz", "QA8akF4jK8eUFmNVnNzDsaxD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
