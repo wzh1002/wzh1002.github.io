@@ -2,9 +2,9 @@
 
 ### 主要是博客和一些个人小项目
 
-- [Blog](http://www.wzh1002.com/blog)
-- [IM](http://www.wzh1002.com/IM/view/main/)
-- [Swiper](http://www.wzh1002.com/Swiper/example)
-- [resume](http://www.wzh1002.com/resume/dist)
-- [virtual-dom](http://www.wzh1002.com/virtual-dom/example)
-- [TodoMVC](http://www.wzh1002.com/TodoMVC)
+- [Blog](https://wzh1002.github.io/blog)
+- [IM](https://wzh1002.github.io/IM/view/main/)
+- [Swiper](https://wzh1002.github.io/Swiper/example)
+- [resume](https://wzh1002.github.io/resume/dist)
+- [virtual-dom](https://wzh1002.github.io/virtual-dom/example)
+- [TodoMVC](https://wzh1002.github.io/TodoMVC)
